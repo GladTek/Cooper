@@ -68,6 +68,14 @@ src/
 
 ## Getting Started
 
+### Quick Start
+Initialize a new project instantly with our CLI:
+```bash
+npx @gladtek/launch-cooper@latest
+```
+
+### Manual Setup
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/gladtek/astro-boilerplate.git
