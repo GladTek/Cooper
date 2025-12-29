@@ -1,5 +1,7 @@
 # The Ultimate Astro Boilerplate
 
+⚠️ DO NOT MERGE THIS PULL REQUEST ⚠️
+
 The most advanced, batteries-included template for building blazing-fast SaaS, AI tools, and modern web applications with Astro 5, Tailwind CSS 4, and React.
 
 <p align="center">
