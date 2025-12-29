@@ -6,11 +6,11 @@ The most advanced, batteries-included template for building blazing-fast SaaS, A
   <a href="https://deploy.workers.cloudflare.com/?url=https://github.com/GladTek/Cooper">
     <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Workers" />
   </a>
-  &nbsp;&nbsp;
+
   <a href="https://app.netlify.com/start/deploy?repository=https://github.com/GladTek/Cooper">
     <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
   </a>
-  &nbsp;&nbsp;
+
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGladTek%2FCooper">
     <img src="https://vercel.com/button" alt="Deploy with Vercel" />
   </a>
