@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@astrojs/netlify": "^6.6.3",
-    "@astrojs/vercel": "^9.0.2",
+    "@astrojs/vercel": "^8.0.4",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "astro-compress": "^2.3.8",

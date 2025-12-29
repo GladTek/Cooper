@@ -27,6 +27,13 @@ const t = useTranslations(lang);
 
 const { Content } = await render(post);
 
+// Calculate available translations
+const allPosts = await getCollection('portfolio');
+const currentBaseSlug = post.id.split('/').slice(1).join('/');
+const availableLangs = allPosts
+    .filter(p => p.id.endsWith(currentBaseSlug))
+    .map(p => p.id.split('/')[0]);
+
 ---
 
 <Layout 
@@ -35,6 +42,7 @@ const { Content } = await render(post);
   image={post.data.heroImage}
   noindex={post.data.noindex}
   nofollow={post.data.nofollow}
+  availableLangs={availableLangs}
 >
 	<article class="pt-32 pb-16">
         <div class="max-w-4xl mx-auto px-6">
