@@ -80,6 +80,34 @@ src/
 - **Advanced FAQ**: Glassmorphic, accessible accordion.
 - **Timeline & Stats**: Interactive roadmaps and animated counters.
 
+## Customization
+ 
+The project is designed to be easily customized via a centralized configuration file.
+ 
+### 1. Site Configuration
+Edit `src/site.config.ts` to manage:
+- **Identity**: Site name, description, and logo.
+- **Navigation**: Header (`NAV_LINKS`) and Footer (`FOOTER_LINKS`) menus.
+- **Socials**: Social media links in `ACTION_LINKS`.
+- **Analytics**: Google Analytics, Umami, etc.
+- **Features**: Toggle built-in features like the announcement banner or search.
+ 
+```typescript
+// src/site.config.ts
+export const siteConfig = {
+  name: 'Cooper',
+  logo: { src: '/logo.svg' },
+  // ...
+};
+```
+ 
+### 2. Styling & Theming
+- **Tailwind CSS**: Configured in `src/styles/theme.css` via CSS variables for light/dark modes.
+- **Typography**: Custom fonts and prose styles in `src/styles/typography.css`.
+ 
+### 3. Internationalization
+Add new languages or update translations in `src/i18n/locales/`. The project uses strictly typed `.properties` files.
+ 
 ## Getting Started
 
 ### Quick Start
@@ -101,12 +129,18 @@ npx @gladtek/launch-cooper@latest
    npm install
    ```
 
-3. **Start the dev server**
+3. **Configure Environment**
+   Copy the example environment file and adjust the variables as needed:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Start the dev server**
    ```bash
    npm run dev
    ```
 
-4. **Deploy to Cloudflare**
+5. **Deploy to Cloudflare**
    ```bash
    npm run deploy
    # or manually
@@ -119,6 +153,14 @@ npx @gladtek/launch-cooper@latest
    - **Vercel**: `npm run build:vercel`
    - **Netlify**: `npm run build:netlify`
    - **Cloudflare**: `npm run build:cloudflare` (default)
+
+
+### Environment Variables
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `ADAPTER` | The build adapter (`vercel`, `netlify`, `cloudflare`). | `cloudflare` |
+| `SITE_URL` | The production URL of the site. | `https://cooper.gladtek.com` |
 
 
 ## How To Guides
