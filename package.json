@@ -7,6 +7,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build && pagefind --site dist",
+    "build:vercel": "cross-env ADAPTER=vercel astro build && pagefind --site dist",
+    "build:netlify": "cross-env ADAPTER=netlify astro build && pagefind --site dist",
+    "build:cloudflare": "cross-env ADAPTER=cloudflare astro build && pagefind --site dist",
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "preview:worker": "wrangler dev",
@@ -40,9 +43,12 @@
     "wrangler": "^4.56.0"
   },
   "devDependencies": {
+    "@astrojs/netlify": "^6.6.3",
+    "@astrojs/vercel": "^9.0.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "astro-compress": "^2.3.8"
+    "astro-compress": "^2.3.8",
+    "cross-env": "^10.1.0"
   },
   "overrides": {
     "vite": "^6.0.0"

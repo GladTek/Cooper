@@ -2,6 +2,20 @@
 
 The most advanced, batteries-included template for building blazing-fast SaaS, AI tools, and modern web applications with Astro 5, Tailwind CSS 4, and React.
 
+<p align="center">
+  <a href="https://deploy.workers.cloudflare.com/?url=https://github.com/GladTek/Cooper">
+    <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Workers" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/GladTek/Cooper">
+    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGladTek%2FCooper">
+    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
+  </a>
+</p>
+
 ## Core Architectural Strategies
 
 This boilerplate is built on several key architectural pillars designed for scale, performance, and developer experience.
@@ -78,8 +92,8 @@ npx @gladtek/launch-cooper@latest
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/gladtek/astro-boilerplate.git
-   cd astro-boilerplate
+   git clone https://github.com/GladTek/Cooper.git
+   cd Cooper
    ```
 
 2. **Install dependencies**
@@ -98,6 +112,14 @@ npx @gladtek/launch-cooper@latest
    # or manually
    npx wrangler deploy
    ```
+
+5. **Deploy to Vercel/Netlify**
+   The project supports Vercel and Netlify out of the box. Use the corresponding build command:
+
+   - **Vercel**: `npm run build:vercel`
+   - **Netlify**: `npm run build:netlify`
+   - **Cloudflare**: `npm run build:cloudflare` (default)
+
 
 ## How To Guides
 
