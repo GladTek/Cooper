@@ -16,15 +16,6 @@ The most advanced, batteries-included template for building blazing-fast SaaS, A
   </a>
 </p>
 
-<p align="center">
-  <a href="https://githubbox.com/GladTek/Cooper/tree/main">
-    <img src="https://codesandbox.io/static/img/play-codesandbox.svg" alt="Open in CodeSandbox" />
-  </a>
-  <a href="https://stackblitz.com/github/GladTek/Cooper">
-    <img src="https://developer.stackblitz.com/img/open_in_stackblitz.svg" alt="Open in StackBlitz" />
-  </a>
-</p>
-
 ## Core Architectural Strategies
 
 This boilerplate is built on several key architectural pillars designed for scale, performance, and developer experience.
