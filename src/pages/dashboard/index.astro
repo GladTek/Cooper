@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SheetsDB from '../../lib/sheets.js';
+
+const apiKey = import.meta.env.SHEETS_API_KEY;
+const sheetsId = import.meta.env.SHEETS_ID;
+
+const db = new SheetsDB(apiKey, sheetsId);
+const products = await db.getProducts();
+const merchants = await db.getMerchants();
+const reviews = await db.getReviews();
+
+const stats = {
+  totalProducts: products.length,
+  totalMerchants: merchants.length,
+  totalReviews: reviews.length,
+  averageRating: reviews.length > 0 
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : 0
+};
+---
+
+<Layout title="Dashboard - MeaMart">
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold mb-8">Dashboard</h1>
+
+      {/* Stats Grid */}
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="text-gray-600 text-sm font-semibold mb-2">Total Products</div>
+          <div class="text-3xl font-bold text-blue-600">{stats.totalProducts}</div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="text-gray-600 text-sm font-semibold mb-2">Total Merchants</div>
+          <div class="text-3xl font-bold text-green-600">{stats.totalMerchants}</div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="text-gray-600 text-sm font-semibold mb-2">Total Reviews</div>
+          <div class="text-3xl font-bold text-purple-600">{stats.totalReviews}</div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <div class="text-gray-600 text-sm font-semibold mb-2">Avg Rating</div>
+          <div class="text-3xl font-bold text-yellow-600">{stats.averageRating}</div>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a href="/dashboard/reviews" class="block p-4 border rounded-lg hover:bg-blue-50 transition">
+            <h3 class="font-semibold text-blue-600">View Reviews</h3>
+            <p class="text-sm text-gray-600">Manage customer reviews</p>
+          </a>
+          <a href="/feed" class="block p-4 border rounded-lg hover:bg-green-50 transition">
+            <h3 class="font-semibold text-green-600">Browse Products</h3>
+            <p class="text-sm text-gray-600">Explore all products</p>
+          </a>
+          <a href="/" class="block p-4 border rounded-lg hover:bg-purple-50 transition">
+            <h3 class="font-semibold text-purple-600">Home</h3>
+            <p class="text-sm text-gray-600">Back to home page</p>
+          </a>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div class="mt-8 bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4">Recent Activity</h2>
+        <div class="text-gray-600">
+          <p>Latest {stats.totalReviews > 5 ? 5 : stats.totalReviews} reviews from customers</p>
+          <ul class="mt-4 space-y-2">
+            {reviews.slice(0, 5).map(review => (
+              <li class="text-sm py-2 border-b">
+                <strong>{review.userName}</strong> gave {review.rating} ⭐ for a product
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .container {
+    max-width: 1200px;
+  }
+</style>

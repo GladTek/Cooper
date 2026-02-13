@@ -1,0 +1,234 @@
+---
+/**
+ * Merchant Reviews Dashboard
+ * Lists reviews and allows visibility toggles
+ */
+
+import Layout from '../../layouts/Layout.astro';
+
+interface ReviewRow {
+  id: string;
+  product_id: string;
+  customer_name: string;
+  rating: number | null;
+  comment: string;
+  created_at: string;
+  is_visible: number;
+  customer_phone?: string;
+}
+
+const user = Astro.locals.user;
+const merchantId = user?.merchant_id || user?.merchantId || user?.id || null;
+
+let reviews: ReviewRow[] = [];
+let error: string | null = null;
+
+if (!user || !merchantId) {
+  error = 'Unauthorized';
+} else {
+  try {
+    const runtime = Astro.locals.runtime || (globalThis as any).CLOUDFLARE_ENV;
+    const db = runtime?.env?.DB;
+
+    if (!db) {
+      error = 'Database not available';
+    } else {
+      const { results } = await db.prepare(
+        `SELECT id, product_id, customer_name, rating, comment, created_at, is_visible, customer_phone
+         FROM reviews
+         WHERE merchant_id = ?
+         ORDER BY created_at DESC
+         LIMIT 200`
+      ).bind(merchantId).all();
+
+      reviews = results || [];
+    }
+  } catch (err) {
+    console.error('Failed to load reviews:', err);
+    error = 'Could not load reviews';
+  }
+}
+
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
+}
+
+const lang = Astro.currentLocale || 'en';
+const isRTL = lang === 'ar';
+---
+
+<Layout title={isRTL ? 'لوحة التقييمات' : 'Reviews Dashboard'}>
+  <div class="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div class="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">
+          {isRTL ? 'إدارة التقييمات' : 'Manage Reviews'}
+        </h1>
+        <span class="text-sm text-gray-500">
+          {reviews.length} {isRTL ? 'تقييم' : 'reviews'}
+        </span>
+      </div>
+
+      {error ? (
+        <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
+          {error}
+        </div>
+      ) : reviews.length > 0 ? (
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'العميل' : 'Customer'}
+                  </th>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'المنتج' : 'Product'}
+                  </th>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'التقييم' : 'Rating'}
+                  </th>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'التعليق' : 'Comment'}
+                  </th>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'التاريخ' : 'Date'}
+                  </th>
+                  <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {isRTL ? 'الإجراءات' : 'Actions'}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-100">
+                {reviews.map((review) => (
+                  <tr key={review.id}>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900">
+                        {review.customer_name || (isRTL ? 'عميل' : 'Customer')}
+                      </div>
+                      {review.customer_phone && (
+                        <div class="text-xs text-gray-500">
+                          {review.customer_phone}
+                        </div>
+                      )}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-900">
+                        {review.product_id}
+                      </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            class={star <= (review.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}
+                          >
+                            ★
+                          </span>
+                        ))}
+                        <span class="text-sm text-gray-600 ml-2">
+                          {review.rating || 0}
+                        </span>
+                      </div>
+                    </td>
+                    <td class="px-6 py-4">
+                      <p class="text-sm text-gray-700 max-w-xs line-clamp-2">
+                        {review.comment || (isRTL ? 'بدون تعليق' : 'No comment')}
+                      </p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="text-sm text-gray-600">
+                        {formatDate(review.created_at)}
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="flex items-center gap-3">
+                        <button
+                          type="button"
+                          class={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                            review.is_visible
+                              ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          }`}
+                          data-review-id={review.id}
+                        >
+                          {review.is_visible ? (isRTL ? 'إخفاء' : 'Hide') : (isRTL ? 'إظهار' : 'Show')}
+                        </button>
+                        <a
+                          href={`https://wa.me/${(review.customer_phone || '').replace(/\D/g, '')}?text=${encodeURIComponent(
+                            isRTL
+                              ? `شكرا لتقييمك! نقدر رأيك حول المنتج ${review.product_id}.`
+                              : `Thanks for your review! We appreciate your feedback on ${review.product_id}.`
+                          )}`
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200"
+                        >
+                          {isRTL ? 'رد واتساب' : 'Reply WhatsApp'}
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <div class="bg-white p-8 rounded-lg shadow-sm text-center">
+          <p class="text-gray-600">
+            {isRTL ? 'لا توجد تقييمات بعد' : 'No reviews yet'}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.addEventListener('click', async (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (!target.dataset.reviewId) return;
+
+    const reviewId = target.dataset.reviewId;
+    target.setAttribute('disabled', 'true');
+
+    try {
+      const response = await fetch(`/api/reviews/${reviewId}/toggle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        target.removeAttribute('disabled');
+        alert('Failed to toggle review visibility');
+      }
+    } catch (err) {
+      target.removeAttribute('disabled');
+      alert('Failed to toggle review visibility');
+    }
+  });
+</script>
+
+<style is:global>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

@@ -1,0 +1,273 @@
+---
+/**
+ * TikTok-Style Product Feed Page
+ * Displays products from all merchants in a vertical scroll format
+ * Fetches merchants and products from D1 database and Google Sheets
+ */
+
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { fetchMerchantProducts, SheetsError } from '../lib/sheets.js';
+
+interface Product {
+  id: string;
+  title: string;
+  description?: string;
+  price: number;
+  image_link?: string;
+  availability: string;
+  merchant_id?: string;
+  merchant_name?: string;
+  merchant_phone?: string;
+  chat_link?: string;
+  view_count?: number;
+}
+
+interface Merchant {
+  id: string;
+  name: string;
+  phone: string;
+  sheet_url: string;
+}
+
+let products: Product[] = [];
+let error: string | null = null;
+
+try {
+  // Get database instance from Cloudflare pages runtime
+  // In SSR mode, Astro.locals contains the platform context
+  const runtime = Astro.locals.runtime || (globalThis as any).CLOUDFLARE_ENV;
+  const db = runtime?.env?.DB;
+  
+  if (!db) {
+    console.warn('Database connection not available - falling back to mock data');
+    error = null;
+    // For development/testing without D1, create mock merchants
+    const mockMerchants: Merchant[] = [
+      {
+        id: 'merchant_1',
+        name: 'المتجر الأول',
+        phone: '201001234567',
+        sheet_url: process.env.PUBLIC_SAMPLE_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1mHIWnDvW9cALRz8iM3K9X5P7Q2R8Z6Y4W5V3U1T2S/edit',
+      }
+    ];
+    
+    // Try to fetch from mock merchants for demo
+    const allProducts: Product[] = [];
+    for (const merchant of mockMerchants) {
+      try {
+        const merchantProducts = await fetchMerchantProducts(merchant.sheet_url);
+        const enhancedProducts = merchantProducts.map((product: any) => ({
+          ...product,
+          merchant_id: merchant.id,
+          merchant_name: merchant.name,
+          merchant_phone: merchant.phone,
+          chat_link: `https://wa.me/${merchant.phone.replace(/\D/g, '')}?text=اهتم بمنتج: ${encodeURIComponent(product.title)}`,
+        }));
+        allProducts.push(...enhancedProducts);
+      } catch (merchantError) {
+        console.warn(`Failed to fetch products for merchant ${merchant.name}:`, merchantError);
+      }
+    }
+    
+    if (allProducts.length > 0) {
+      // Shuffle products for random feed effect
+      function shuffleArray<T>(arr: T[]): T[] {
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+      }
+      products = shuffleArray(allProducts);
+    }
+  } else {
+    // Fetch all active merchants from D1
+    const { results: merchants } = await db.prepare(
+      `SELECT id, name, phone, sheet_url 
+       FROM merchants 
+       WHERE active = 1 AND sheet_url IS NOT NULL 
+       ORDER BY created_at DESC`
+    ).all();
+
+    // Aggregate products from all merchants
+    const allProducts: Product[] = [];
+    
+    for (const merchant of merchants || []) {
+      try {
+        // Fetch products for this merchant from their Google Sheet
+        const merchantProducts = await fetchMerchantProducts(merchant.sheet_url);
+        
+        // Enhance products with merchant info and chat link
+        const enhancedProducts = merchantProducts.map((product: any) => ({
+          ...product,
+          merchant_id: merchant.id,
+          merchant_name: merchant.name,
+          merchant_phone: merchant.phone,
+          chat_link: `https://wa.me/${merchant.phone.replace(/\D/g, '')}?text=اهتم بمنتج: ${encodeURIComponent(product.title)}`,
+        }));
+        
+        allProducts.push(...enhancedProducts);
+      } catch (merchantError) {
+        console.warn(`Failed to fetch products for merchant ${merchant.name}:`, merchantError);
+        // Continue with other merchants if one fails
+      }
+    }
+
+    if (allProducts.length === 0) {
+      error = 'No products available from merchants';
+    } else {
+      // Shuffle products for random feed effect using Fisher-Yates algorithm
+      function shuffleArray<T>(arr: T[]): T[] {
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+      }
+
+      products = shuffleArray(allProducts).slice(0, 100);
+    }
+
+    // Track page view analytics
+    if (allProducts.length > 0) {
+      try {
+        const analyticsId = `analytics_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        await db.prepare(
+          `INSERT INTO analytics 
+           (id, event_type, source, device_type, session_id, timestamp)
+           VALUES (?, ?, ?, ?, ?, ?)`
+        ).bind(
+          analyticsId,
+          'feed_viewed',
+          'web',
+          'desktop', // Default, can be enhanced with user agent detection
+          Astro.cookies.get('session_id')?.value || 'session_' + Date.now(),
+          new Date().toISOString()
+        ).run();
+      } catch (analyticsError) {
+        console.warn('Failed to track analytics:', analyticsError);
+      }
+    }
+  }
+} catch (err) {
+  if (err instanceof SheetsError) {
+    error = `Failed to load products: ${err.message} (${err.code})`;
+  } else if (err instanceof Error) {
+    error = `An error occurred: ${err.message}`;
+  } else {
+    error = 'An unexpected error occurred';
+  }
+  console.error('Feed loading error:', err);
+}
+
+// Detect if RTL language
+const lang = Astro.currentLocale || 'en';
+const isRTL = lang === 'ar';
+---
+
+<Layout title="Feed - MeaMart">
+  <div 
+    class="w-full h-screen flex flex-col bg-black text-white overflow-hidden"
+    dir={isRTL ? 'rtl' : 'ltr'}
+  >
+    {error ? (
+      <div class="flex-1 flex items-center justify-center">
+        <div class="text-center px-6">
+          <div class="text-6xl mb-4">⚠️</div>
+          <p class="text-xl text-red-400 mb-4">{error}</p>
+          <p class="text-gray-400 text-sm">
+            {isRTL ? 'يرجى تحديث الصفحة أو المحاولة لاحقاً' : 'Please try refreshing the page'}
+          </p>
+        </div>
+      </div>
+    ) : products.length > 0 ? (
+      <div class="relative w-full h-full">
+        {/* Feed container with snap scrolling */}
+        <div class="w-full h-full overflow-y-scroll snap-y snap-mandatory scroll-smooth">
+        {products.map((product, index) => (
+            <div
+              key={product.id}
+              class="w-full h-screen snap-start flex flex-col relative"
+              data-product-id={product.id}
+            >
+              <ProductCard
+                product={{
+                  id: product.id,
+                  title: product.title,
+                  price: product.price,
+                  image: product.image_link || '/images/placeholder.jpg',
+                  merchant_name: product.merchant_name || 'Unknown',
+                  merchant_phone: product.merchant_phone || '',
+                }}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Feed indicator */}
+        <div class={`absolute top-6 ${isRTL ? 'right-6' : 'left-6'} z-50`}>
+          <div class="bg-black bg-opacity-50 px-4 py-2 rounded-full text-sm text-gray-300">
+            {products.length} {isRTL ? 'منتج' : 'products'}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div class="flex-1 flex items-center justify-center">
+        <div class="text-center px-6">
+          <div class="text-6xl mb-4 animate-spin">⏳</div>
+          <p class="text-2xl text-gray-500">
+            {isRTL ? 'لا توجد منتجات' : 'No products available'}
+          </p>
+          <p class="text-gray-600 mt-2 text-sm">
+            {isRTL ? 'تحقق لاحقاً!' : 'Check back soon!'}
+          </p>
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style is:global>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Snap scroll performance optimization */
+.snap-y {
+  scroll-snap-type: y mandatory;
+  overflow-behavior: smooth;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
+
+/* Prevent content shift during scroll */
+body {
+  scrollbar-gutter: stable;
+}
+</style>

@@ -1,0 +1,78 @@
+---
+interface Props {
+  product: {
+    id: string;
+    title: string;
+    price: number;
+    image?: string;
+    merchant_name?: string;
+    merchant_phone?: string;
+  };
+}
+
+const { product } = Astro.props;
+
+if (!product?.id || !product?.title) {
+  throw new Error('ProductCard: Missing required product data (id, title)');
+}
+
+const safeTitle = product.title.trim();
+const safePrice = Number.isFinite(product.price) ? product.price : 0;
+const imageUrl = product.image || '/images/placeholder.jpg';
+const merchantName = product.merchant_name || '';
+const phoneDigits = (product.merchant_phone || '').replace(/\D/g, '');
+const isChatEnabled = Boolean(phoneDigits);
+const chatLink = isChatEnabled
+  ? `https://wa.me/${phoneDigits}?text=${encodeURIComponent(`مرحباً، أود الاستفسار عن المنتج: ${safeTitle}`)}`
+  : '#';
+const productUrl = `/products/${encodeURIComponent(product.id)}`;
+---
+
+<a
+  href={productUrl}
+  class="block h-screen w-full max-w-lg mx-auto focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+  aria-label={`فتح ${safeTitle}`}
+>
+  <article class="relative h-full w-full overflow-hidden bg-gray-900">
+    <div
+      class="absolute inset-0 bg-center bg-cover"
+      style={`background-image: url('${imageUrl}')`}
+      role="img"
+      aria-label={safeTitle}
+    ></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+    <div class="relative h-full flex flex-col justify-end p-6 sm:p-8">
+      <div class="mb-4">
+        {merchantName && (
+          <p class="text-sm text-gray-200 mb-1">{merchantName}</p>
+        )}
+        <h2 class="text-2xl sm:text-3xl font-bold text-white leading-snug">
+          {safeTitle}
+        </h2>
+        <p class="text-xl sm:text-2xl font-semibold text-yellow-300 mt-2">
+          {Math.floor(safePrice)} ج.م
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a
+          href={chatLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-disabled={!isChatEnabled}
+          class={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm sm:text-base font-semibold transition-all ${
+            isChatEnabled
+              ? 'bg-green-500 text-white hover:bg-green-600'
+              : 'bg-gray-600 text-gray-200 pointer-events-none'
+          }`}
+        >
+          راسل على واتساب
+        </a>
+        <span class="text-xs text-gray-300 self-center">
+          اضغط لعرض التفاصيل
+        </span>
+      </div>
+    </div>
+  </article>
+</a>
