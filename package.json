@@ -33,6 +33,8 @@
     "astro-mermaid": "^1.1.0",
     "clsx": "^2.1.0",
     "cmdk": "^1.1.1",
+    "google-auth-library": "^10.5.0",
+    "google-spreadsheet": "^5.1.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
     "mermaid": "^11.12.2",
@@ -43,16 +45,17 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "^4.1.7",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.56.0"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@astrojs/netlify": "^6.6.3",
     "@astrojs/vercel": "^8.0.4",
+    "@cloudflare/workers-types": "^4.20260213.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "astro-compress": "^2.3.8",
-    "cross-env": "^10.1.0"
+    "cross-env": "^10.1.0",
+    "wrangler": "^4.65.0"
   },
   "overrides": {
     "vite": "^6.0.0"

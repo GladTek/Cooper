@@ -1,11 +1,76 @@
-name = "cooper"
-compatibility_date = "2025-12-21"
+name = "meamart"
+type = "javascript"
+account_id = ""
+zone_id = ""
+workers_dev = true
+compatibility_date = "2026-02-13"
 compatibility_flags = ["nodejs_compat"]
 main = "dist/_worker.js/index.js"
 
+# Webhook routes configuration
+routes = [
+  { pattern = "api.meamart.com/api/webhooks/*", zone_id = "" },
+  { pattern = "meamart.pages.dev/api/webhooks/*", zone_id = "" }
+]
+
+# Default environment (development)
+[env.development]
+name = "meamart-dev"
+workers_dev = true
+
+[env.development.vars]
+ENVIRONMENT = "development"
+DEBUG = "true"
+GOOGLE_SERVICE_EMAIL = ""
+GOOGLE_PRIVATE_KEY = ""
+MEACHAT_WEBHOOK_SECRET = ""
+
+[[env.development.kv_namespaces]]
+binding = "CACHE"
+id = ""
+preview_id = ""
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "meamart_db"
+database_id = ""
+preview_id = ""
+
+# Production environment
+[env.production]  
+name = "meamart-prod"
+workers_dev = false
+routes = [
+  { pattern = "api.meamart.com/api/webhooks/*", zone_id = "" }
+]
+
+[env.production.vars]
+ENVIRONMENT = "production"
+DEBUG = "false"
+GOOGLE_SERVICE_EMAIL = ""
+GOOGLE_PRIVATE_KEY = ""
+MEACHAT_WEBHOOK_SECRET = ""
+
+[[env.production.kv_namespaces]]
+binding = "CACHE"
+id = ""
+preview_id = ""
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "meamart_db"
+database_id = ""
+preview_id = ""
+
+# Assets
 [assets]
 directory = "dist"
 binding = "ASSETS"
 
+# Observability
 [observability]
 enabled = true
+
+# Tail consumers
+[env.production.tail_consumers]
+service = "meamart-logger"

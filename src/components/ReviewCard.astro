@@ -1,0 +1,83 @@
+---
+interface Props {
+  review: {
+    customer_name: string;
+    rating: number;
+    comment: string;
+    created_at: string;
+  };
+}
+
+const { review } = Astro.props;
+
+if (!review?.customer_name || !review?.comment || !review?.created_at) {
+  throw new Error('ReviewCard: Missing required review data');
+}
+
+const rating = Math.min(Math.max(Math.floor(review.rating || 0), 0), 5);
+const stars = Array.from({ length: 5 }, (_, i) => i < rating);
+
+function formatRelativeDate(dateString: string): string {
+  const now = new Date();
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'تاريخ غير متوفر';
+
+  const diffMs = now.getTime() - date.getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  const hours = Math.floor(diffMs / 3600000);
+  const days = Math.floor(diffMs / 86400000);
+  const weeks = Math.floor(days / 7);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(days / 365);
+
+  if (minutes < 1) return 'الآن';
+  if (minutes === 1) return 'منذ دقيقة';
+  if (minutes === 2) return 'منذ دقيقتين';
+  if (minutes < 10) return `منذ ${minutes} دقائق`;
+  if (minutes < 60) return `منذ ${minutes} دقيقة`;
+
+  if (hours === 1) return 'منذ ساعة';
+  if (hours === 2) return 'منذ ساعتين';
+  if (hours < 10) return `منذ ${hours} ساعات`;
+  if (hours < 24) return `منذ ${hours} ساعة`;
+
+  if (days === 1) return 'منذ يوم';
+  if (days === 2) return 'منذ يومين';
+  if (days < 10) return `منذ ${days} أيام`;
+  if (days < 30) return `منذ ${days} يوم`;
+
+  if (months === 1) return 'منذ شهر';
+  if (months === 2) return 'منذ شهرين';
+  if (months < 12) return `منذ ${months} أشهر`;
+
+  if (years === 1) return 'منذ سنة';
+  if (years === 2) return 'منذ سنتين';
+  return `منذ ${years} سنة`;
+}
+
+const relativeDate = formatRelativeDate(review.created_at);
+---
+
+<article class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-5">
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <p class="text-sm font-semibold text-gray-900">
+        {review.customer_name}
+      </p>
+      <div class="flex items-center gap-1 mt-2" aria-label={`التقييم ${rating} من 5`}>
+        {stars.map((filled, i) => (
+          <span key={i} class={filled ? 'text-yellow-400' : 'text-gray-300'}>
+            ★
+          </span>
+        ))}
+      </div>
+    </div>
+    <span class="text-xs text-gray-500">
+      {relativeDate}
+    </span>
+  </div>
+
+  <p class="text-sm text-gray-700 mt-3 leading-relaxed">
+    {review.comment}
+  </p>
+</article>

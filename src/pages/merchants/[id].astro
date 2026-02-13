@@ -1,0 +1,485 @@
+---
+/**
+ * Merchant Profile Page
+ * Displays merchant information, products grid, and customer reviews
+ * Generates static pages for all merchants from D1
+ */
+
+import Layout from '../../layouts/Layout.astro';
+import ReviewCard from '../../components/ReviewCard.astro';
+import { fetchMerchantProducts, SheetsError } from '../../lib/sheets.js';
+
+interface Merchant {
+  id: string;
+  name: string;
+  phone: string;
+  sheet_url: string;
+  bot_id?: string;
+  verified?: boolean;
+}
+
+interface Product {
+  id: string;
+  title: string;
+  description?: string;
+  price: number;
+  image_link?: string;
+  availability: string;
+  merchant_id?: string;
+  merchant_name?: string;
+  merchant_phone?: string;
+  chat_link?: string;
+}
+
+interface Review {
+  id: string;
+  customer_name: string;
+  rating: number | null;
+  comment: string;
+  created_at: string;
+  verified: boolean;
+  product_id?: string;
+}
+
+/**
+ * Generate static paths for all merchants
+ * Fetches merchants from D1
+ */
+export async function getStaticPaths() {
+  try {
+    // Get database instance
+    const runtime = (globalThis as any).CLOUDFLARE_ENV;
+    const db = runtime?.env?.DB;
+
+    let merchants: Merchant[] = [];
+
+    // Try to fetch merchants from D1
+    if (db) {
+      try {
+        const { results } = await db.prepare(
+          `SELECT id, name, phone, sheet_url, bot_id, verified
+           FROM merchants 
+           WHERE active = 1 AND sheet_url IS NOT NULL`
+        ).all();
+        merchants = results || [];
+      } catch (error) {
+        console.warn('Failed to fetch merchants from D1:', error);
+      }
+    }
+
+    // Fallback to mock merchants for development
+    if (merchants.length === 0) {
+      merchants = [
+        {
+          id: 'merchant_1',
+          name: 'المتجر الأول',
+          phone: '201001234567',
+          sheet_url: process.env.PUBLIC_SAMPLE_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1mHIWnDvW9cALRz8iM3K9X5P7Q2R8Z6Y4W5V3U1T2S/edit',
+          verified: true,
+        }
+      ];
+    }
+
+    // Generate paths for each merchant
+    return merchants.map((merchant) => ({
+      params: { id: merchant.id },
+      props: { merchant },
+    }));
+  } catch (error) {
+    console.error('Error generating merchant static paths:', error);
+    return [];
+  }
+}
+
+interface Props {
+  merchant: Merchant;
+}
+
+const { merchant } = Astro.props;
+let products: Product[] = [];
+let reviews: Review[] = [];
+let productsError: string | null = null;
+let reviewsError: string | null = null;
+
+// Fetch products from merchant's Google Sheet
+try {
+  const merchantProducts = await fetchMerchantProducts(merchant.sheet_url);
+  
+  products = merchantProducts.map((product: any) => ({
+    ...product,
+    merchant_id: merchant.id,
+    merchant_name: merchant.name,
+    merchant_phone: merchant.phone,
+    chat_link: `https://wa.me/${merchant.phone.replace(/\D/g, '')}?text=اهتم بمنتج: ${encodeURIComponent(product.title)}`,
+  }));
+} catch (err) {
+  console.warn('Failed to fetch merchant products:', err);
+  productsError = 'Could not load products from merchant sheet';
+}
+
+// Fetch reviews from D1
+try {
+  const runtime = (globalThis as any).CLOUDFLARE_ENV;
+  const db = runtime?.env?.DB;
+
+  if (db && merchant.id) {
+    const { results } = await db.prepare(
+      `SELECT id, customer_name, rating, comment, created_at, verified, product_id
+       FROM reviews 
+       WHERE merchant_id = ? AND is_visible = 1
+       ORDER BY created_at DESC
+       LIMIT 50`
+    ).bind(merchant.id).all();
+
+    reviews = results || [];
+  }
+} catch (err) {
+  console.warn('Failed to fetch merchant reviews:', err);
+  reviewsError = 'Could not load reviews';
+}
+
+// Calculate statistics
+const ratingsOnly = reviews.filter((r) => r.rating !== null && r.rating !== undefined);
+const averageRating = ratingsOnly.length > 0
+  ? (ratingsOnly.reduce((sum, r) => sum + (r.rating || 0), 0) / ratingsOnly.length).toFixed(1)
+  : 0;
+
+const totalReviews = reviews.length;
+const recentReviews = reviews.slice(0, 5);
+
+// Format date for display
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ar-EG', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch {
+    return dateString;
+  }
+}
+
+// Detect RTL language
+const lang = Astro.currentLocale || 'en';
+const isRTL = lang === 'ar';
+const pageUrl = Astro.url?.href || Astro.request.url;
+
+// Generate JSON-LD schema for Organization
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': pageUrl,
+  url: pageUrl,
+  name: merchant.name,
+  telephone: merchant.phone,
+  image: '/logo.png',
+  priceRange: '$$',
+  aggregateRating: ratingsOnly.length > 0 ? {
+    '@type': 'AggregateRating',
+    ratingValue: averageRating,
+    reviewCount: ratingsOnly.length,
+  } : undefined,
+  review: recentReviews.length > 0 ? recentReviews.map((review) => ({
+    '@type': 'Review',
+    author: {
+      '@type': 'Person',
+      name: review.customer_name,
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: review.rating ?? 0,
+    },
+    reviewBody: review.comment,
+    datePublished: review.created_at,
+  })) : undefined,
+};
+---
+
+<Layout title={`${merchant.name} - MeaMart`}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  
+  <div class="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+    {/* Merchant Header */}
+    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+      <div class="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div class="flex items-start justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <h1 class="text-4xl md:text-5xl font-bold">
+                {merchant.name}
+              </h1>
+              {merchant.verified && (
+                <svg class="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              )}
+            </div>
+
+            {/* Stats Row */}
+            <div class="flex gap-6 mb-6">
+              <div>
+                <p class="text-blue-100 text-sm">
+                  {isRTL ? 'المنتجات' : 'Products'}
+                </p>
+                <p class="text-2xl font-bold">{products.length}</p>
+              </div>
+              <div>
+                <p class="text-blue-100 text-sm">
+                  {isRTL ? 'التقييمات' : 'Reviews'}
+                </p>
+                <p class="text-2xl font-bold">{totalReviews}</p>
+              </div>
+              <div>
+                <p class="text-blue-100 text-sm">
+                  {isRTL ? 'التقييم المتوسط' : 'Avg Rating'}
+                </p>
+                <p class="text-2xl font-bold">
+                  {averageRating === '0' ? 'N/A' : averageRating} ⭐
+                </p>
+              </div>
+            </div>
+
+            {/* Contact Buttons */}
+            <div class="flex gap-3">
+              <a
+                href={`https://wa.me/${merchant.phone.replace(/\D/g, '')}?text=مرحبا، أود الاستفسار عن المنتجات`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-blue-600 font-semibold px-6 py-2 rounded-lg transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-1.025 0-2.04-.315-2.918-.916l-.209-.124-2.16.413.421-2.054c-.57-.903-.898-1.955-.898-3.035 0-3.181 2.587-5.768 5.768-5.768 1.542 0 2.992.601 4.082 1.691 1.089 1.09 1.692 2.539 1.692 4.082 0 3.181-2.587 5.768-5.768 5.768m4.989-14.411C6.463.98 3.606 1.05 1.635 2.888c-1.97 1.839-2.063 4.949-.208 6.884l.041.046-1.365 4.177 4.304-1.33.06.033c1.926 1.879 5.03 1.787 6.884-.208 1.839-1.97 1.949-5.111.208-7.084-.438-.462-.956-.851-1.529-1.126" />
+                </svg>
+                {isRTL ? 'راسل على واتساب' : 'Chat on WhatsApp'}
+              </a>
+
+              <a
+                href={`tel:${merchant.phone.replace(/\D/g, '')}`}
+                class="inline-flex items-center gap-2 border-2 border-white text-white hover:bg-blue-600 font-semibold px-6 py-2 rounded-lg transition-colors"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773c.058.319.255.684.481.95.226.266.603.554.988.667.385.113.799.02 1.18-.122l2.75-1.1a1 1 0 011.23.754l.74 4.435a1 1 0 01-.543 1.06l-2.08 1.04a1 1 0 00-.523 1.23c1.07 3.741 3.704 6.374 7.445 7.445a1 1 0 001.23-.523l1.04-2.08a1 1 0 011.06-.543l4.435.74a1 1 0 01.836.986v2.153a1 1 0 01-1 1h-2C7.82 20 2 14.18 2 7V3z" />
+                </svg>
+                {isRTL ? 'اتصل' : 'Call'}
+              </a>
+            </div>
+          </div>
+
+          {/* Merchant Icon/Avatar */}
+          <div class="w-24 h-24 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Main Content */}
+    <div class="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      {/* Products Section */}
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-3xl font-bold text-gray-900">
+            {isRTL ? 'المنتجات' : 'Products'}
+          </h2>
+          <span class="text-gray-600">
+            {products.length} {isRTL ? 'منتج' : 'products'}
+          </span>
+        </div>
+
+        {productsError ? (
+          <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-red-700">
+            {productsError}
+          </div>
+        ) : products.length > 0 ? (
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <a
+                key={product.id}
+                href={`/products/${merchant.id}_${product.id}`}
+                class="group bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden"
+              >
+                {/* Product Image */}
+                <div class="relative overflow-hidden bg-gray-200 aspect-square">
+                  {product.image_link ? (
+                    <img
+                      src={product.image_link}
+                      alt={product.title}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+
+                  {/* Availability Badge */}
+                  <div class={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold ${
+                    product.availability === 'available'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}>
+                    {product.availability === 'available' ? (
+                      isRTL ? 'متاح' : 'In Stock'
+                    ) : (
+                      isRTL ? 'غير متاح' : 'Out'
+                    )}
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div class="p-4">
+                  <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2">
+                    {product.title}
+                  </h3>
+                  <p class="text-2xl font-bold text-blue-600 mb-2">
+                    {Math.floor(product.price)} {isRTL ? 'ج.م' : 'EGP'}
+                  </p>
+                  {product.description && (
+                    <p class="text-sm text-gray-600 line-clamp-2">
+                      {product.description}
+                    </p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-12 bg-white rounded-lg">
+            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+            <p class="text-gray-600">
+              {isRTL ? 'لا توجد منتجات متاحة حالياً' : 'No products available'}
+            </p>
+          </div>
+        )}
+      </section>
+
+      {/* Reviews Section */}
+      <section class="bg-white rounded-lg shadow-sm p-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">
+          {isRTL ? 'التقييمات والآراء' : 'Reviews & Ratings'}
+        </h2>
+
+        {reviewsError && (
+          <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {reviewsError}
+          </div>
+        )}
+
+        {/* Rating Summary */}
+        {ratingsOnly.length > 0 && (
+          <div class="mb-8 pb-8 border-b border-gray-200">
+            <div class="flex items-start gap-8">
+              {/* Large Rating Display */}
+              <div class="flex flex-col items-center">
+                <p class="text-5xl font-bold text-blue-600 mb-2">
+                  {averageRating}
+                </p>
+                <div class="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      class={`w-5 h-5 ${
+                        i < Math.round(Number(averageRating))
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
+                      }`}
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p class="text-sm text-gray-600">
+                  {ratingsOnly.length} {isRTL ? 'تقييم' : 'ratings'}
+                </p>
+              </div>
+
+              {/* Rating Distribution */}
+              <div class="flex-1">
+                {[5, 4, 3, 2, 1].map((stars) => {
+                  const count = reviews.filter((r) => r.rating === stars).length;
+                  const percentage = ratingsOnly.length > 0 ? (count / ratingsOnly.length) * 100 : 0;
+                  return (
+                    <div key={stars} class="flex items-center gap-3 mb-2">
+                      <span class="text-sm text-gray-600 w-8">
+                        {stars} ⭐
+                      </span>
+                      <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          class="h-full bg-yellow-400"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                      <span class="text-sm text-gray-600 w-12 text-right">
+                        {count}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Reviews List */}
+        {recentReviews.length > 0 ? (
+          <div class="space-y-6">
+            <h3 class="font-semibold text-lg text-gray-900">
+              {isRTL ? 'آخر التقييمات' : 'Recent Reviews'}
+            </h3>
+            {recentReviews.map((review) => (
+              <ReviewCard
+                key={review.id}
+                review={{
+                  customer_name: review.customer_name,
+                  rating: review.rating || 0,
+                  comment: review.comment,
+                  created_at: review.created_at,
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-12">
+            <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+            </svg>
+            <p class="text-gray-600">
+              {isRTL ? 'لا توجد تقييمات بعد' : 'No reviews yet'}
+            </p>
+          </div>
+        )}
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style is:global>
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Line clamping */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+</style>
