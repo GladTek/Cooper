@@ -14,7 +14,7 @@
     "build:netlify": "cross-env ADAPTER=netlify astro build && pagefind --site dist",
     "build:cloudflare": "cross-env ADAPTER=cloudflare astro build && pagefind --site dist",
     "preview": "astro preview",
-    "deploy": "wrangler deploy",
+    "deploy": "npm run build:cloudflare && wrangler deploy",
     "preview:worker": "wrangler dev",
     "astro": "astro"
   },
