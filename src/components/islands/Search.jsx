@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Search as SearchIcon, X, Book, Zap, LayoutGrid, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import DevSearchModal from "./DevSearchModal";
+import Fuse from 'fuse.js';
 
 const POPULAR_LINKS = [
   { label: "Getting Started", href: "/docs/getting-started/", icon: Book, localize: false },
@@ -10,93 +10,61 @@ const POPULAR_LINKS = [
   { label: "Blog", href: "/blog/", icon: FileText },
 ];
 
-export default function Search({ placeholder = "Search...", devModalLabels, lang = "en" }) {
+export default function Search({ placeholder = "Search...", lang = "en" }) {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [fuse, setFuse] = useState(null);
+  const inputRef = useRef(null);
 
-  // Localize links
   const localizedLinks = POPULAR_LINKS.map(link => {
-    // Return explicit non-localized or external links as is
-    if (link.localize === false || link.href.startsWith('http')) {
-        return link;
-    }
-    
-    // Otherwise localize
-    return {
-        ...link,
-        href: `/${lang}${link.href}`.replace(/\/+/g, '/')
-    };
+    if (link.localize === false || link.href.startsWith('http')) return link;
+    return { ...link, href: `/${lang}${link.href}`.replace(/\/+/g, '/') };
   });
 
-  // Helper to dynamically load Pagefind assets
-  const loadPagefind = async () => {
-    if (window.PagefindUI) return;
+  useEffect(() => {
+    if (open && !fuse) {
+      fetch('/api/search.json')
+        .then(res => res.json())
+        .then(data => {
+          const fuseInstance = new Fuse(data, {
+            keys: ['title', 'description', 'body'],
+            includeMatches: true,
+            minMatchCharLength: 2,
+            threshold: 0.3,
+            ignoreLocation: true,
+          });
+          setFuse(fuseInstance);
+        })
+        .catch(err => console.error("Failed to load search index:", err));
+    }
+  }, [open, fuse]);
 
-    return new Promise((resolve, reject) => {
-      // 1. Load CSS
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/pagefind/pagefind-ui.css';
-      document.head.appendChild(link);
+  useEffect(() => {
+    if (fuse && query.trim()) {
+      const searchResults = fuse.search(query).slice(0, 15);
+      setResults(searchResults);
+    } else {
+      setResults([]);
+    }
+  }, [query, fuse]);
 
-      // 2. Load JS
-      const script = document.createElement('script');
-      script.src = '/pagefind/pagefind-ui.js';
-      script.async = true;
-      script.onload = () => {
-        if (window.PagefindUI) resolve(true);
-        else reject(new Error('PagefindUI failed to load'));
-      };
-      script.onerror = () => reject(new Error('Failed to load Pagefind scripts'));
-      document.head.appendChild(script);
-    });
-  };
+  useEffect(() => {
+    if (open && inputRef.current) setTimeout(() => inputRef.current.focus(), 100);
+    if (!open) setQuery("");
+  }, [open]);
 
   useEffect(() => {
     const down = (e) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
-        if (!open) loadPagefind();
+        setOpen((o) => !o);
       }
-      if (e.key === "Escape") {
-        setOpen(false);
-      }
+      if (e.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [open]);
-
-  useEffect(() => {
-    if (open && !import.meta.env.DEV) {
-      const initSearch = async () => {
-        try {
-          await loadPagefind();
-          setTimeout(() => {
-            if (window.PagefindUI) {
-              const container = document.getElementById("search-container");
-              if (container) {
-                container.innerHTML = "";
-                new PagefindUI({ 
-                  element: "#search-container", 
-                  showSubResults: true,
-                  autofocus: true,
-                  baseUrl: "/",
-                  bundlePath: "/pagefind/",
-                  showImages: true,
-                  translations: {
-                    placeholder: placeholder
-                  }
-                });
-              }
-            }
-          }, 50);
-        } catch (error) {
-          console.error('Search initialization failed:', error);
-        }
-      };
-      initSearch();
-    }
-  }, [open, placeholder]);
+  }, []);
 
   return (
     <>
@@ -128,47 +96,80 @@ export default function Search({ placeholder = "Search...", devModalLabels, lang
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-background border border-foreground/20 rounded-2xl shadow-2xl ring-1 ring-foreground/20" 
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-background border border-foreground/20 rounded-2xl shadow-2xl ring-1 ring-foreground/20 flex flex-col" 
               onClick={(e) => e.stopPropagation()}
             >
-              {import.meta.env.DEV ? (
-                <DevSearchModal onClose={() => setOpen(false)} labels={devModalLabels} />
-              ) : (
-                <div className="relative">
-                  <button 
-                    onClick={() => setOpen(false)}
-                    className="absolute right-4 top-4 p-2 rounded-full text-foreground hover:bg-foreground/10 transition-colors z-20"
-                    aria-label="Close Search"
-                  >
-                    <X size={18} />
-                  </button>
+              <div className="relative border-b border-foreground/10 shrink-0">
+                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/50" />
+                <input 
+                  ref={inputRef}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={placeholder}
+                  className="w-full bg-transparent py-4 pl-12 pr-12 text-foreground outline-hidden placeholder:text-foreground/50 text-lg"
+                />
+                <button 
+                  onClick={() => setOpen(false)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full text-foreground/50 hover:bg-foreground/10 hover:text-foreground transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
-                  <div className="p-4 pt-10" id="search-container">
-                    {/* Pagefind UI will be injected here */}
-                  </div>
-
-                  {/* Empty State / Popular Links */}
-                  <div className="px-6 pb-8 border-t border-foreground/10">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-foreground/50 mb-4 mt-6">
+              <div className="flex-1 overflow-y-auto p-4 md:p-6">
+                {query.trim() ? (
+                  results.length > 0 ? (
+                    <div className="space-y-4">
+                      {results.map(({ item }) => (
+                        <a 
+                          key={item.url} 
+                          href={item.url}
+                          onClick={() => setOpen(false)}
+                          className="block p-4 rounded-xl border border-foreground/10 bg-foreground/5 hover:bg-foreground/10 transition-colors group"
+                        >
+                          <h4 className="font-bold text-lg text-foreground group-hover:text-primary mb-1">
+                            {item.title}
+                          </h4>
+                          {item.description && (
+                            <p className="text-sm text-foreground/70 mb-2 line-clamp-2">
+                              {item.description}
+                            </p>
+                          )}
+                          <div className="text-xs text-foreground/50 font-mono">
+                            {item.url}
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-foreground/50">
+                      No results found for "{query}"
+                    </div>
+                  )
+                ) : (
+                  <>
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-foreground/50 mb-4">
                       Popular Links
                     </h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                       {localizedLinks.map((link) => (
-                         <a 
-                            key={link.href}
-                            href={link.href}
-                            className="flex items-center gap-3 p-3 rounded-xl bg-foreground/5 hover:bg-foreground/10 transition-colors border border-foreground/5 group"
-                         >
-                            <div className="w-8 h-8 rounded-lg bg-background border border-foreground/10 flex items-center justify-center text-foreground group-hover:text-primary transition-colors">
-                               <link.icon size={16} />
-                            </div>
-                            <span className="text-sm font-bold text-foreground group-hover:text-primary">{link.label}</span>
-                         </a>
-                       ))}
+                      {localizedLinks.map((link) => (
+                        <a 
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setOpen(false)}
+                          className="flex items-center gap-3 p-3 rounded-xl bg-foreground/5 hover:bg-foreground/10 transition-colors border border-foreground/5 group"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-background border border-foreground/10 flex items-center justify-center text-foreground group-hover:text-primary transition-colors">
+                            <link.icon size={16} />
+                          </div>
+                          <span className="text-sm font-bold text-foreground group-hover:text-primary">{link.label}</span>
+                        </a>
+                      ))}
                     </div>
-                  </div>
-                </div>
-              )}
+                  </>
+                )}
+              </div>
             </motion.div>
           </div>
         )}

@@ -1,10 +1,10 @@
 ---
+export const prerender = true;
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Layout from '~/layouts/Layout.astro';
 import { ArrowLeft, Calendar, ExternalLink } from 'lucide-react';
 import { defaultLang } from '~/i18n/ui';
 import { isRtl, useTranslations } from '~/i18n/utils';
-import { getRelativeLocaleUrl } from 'astro:i18n';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('portfolio');
@@ -48,7 +48,7 @@ const availableLangs = allPosts
         <div class="max-w-4xl mx-auto px-6">
             <div class="mb-8">
                  <a 
-                    href={getRelativeLocaleUrl(lang, 'portfolio')}
+                    href={`/${lang}/portfolio`}
                     class="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
                   >
                     <ArrowLeft className={`w-4 h-4 ${isRtl(lang) ? 'ml-2 rotate-180' : 'mr-2'} group-hover:-translate-x-1 transition-transform`} />

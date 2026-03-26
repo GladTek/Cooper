@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import Layout from '~/layouts/Layout.astro';
 import ContentSection from '~/components/sections/ContentSection.astro';
 import FeaturesList from '~/components/sections/FeaturesList.astro';
@@ -35,6 +36,45 @@ const timelineItems = [
     { date: t['about.timeline.3.date'], title: t['about.timeline.3.title'], description: t['about.timeline.3.desc'] },
     { date: t['about.timeline.4.date'], title: t['about.timeline.4.title'], description: t['about.timeline.4.desc'] },
 ];
+
+const aboutBenefits = [
+    { title: t['about.feat.fast'], description: t['about.feat.fast.desc'], icon: Zap },
+    { title: t['about.feat.secure'], description: t['about.feat.secure.desc'], icon: Shield },
+    { title: t['about.feat.responsive'], description: t['about.feat.responsive.desc'], icon: Smartphone },
+    { title: t['about.feat.seo'], description: t['about.feat.seo.desc'], icon: Globe },
+    { title: t['about.feat.dev'], description: t['about.feat.dev.desc'], icon: Code },
+    { title: t['about.feat.comp'], description: t['about.feat.comp.desc'], icon: Layers },
+];
+
+const teamMembers = [
+    {
+        name: t['about.team.cooper.name'],
+        role: t['about.team.cooper.role'],
+        imageSource: cooperImage,
+        github: "https://github.com/gladtek",
+        linkedin: "https://linkedin.com/company/gladtek"
+    },
+    {
+        name: t['about.team.brand.name'],
+        role: t['about.team.brand.role'],
+        imageSource: brandImage,
+        twitter: "https://github.com/gladtek",
+        linkedin: "https://linkedin.com/company/gladtek"
+    },
+    {
+        name: t['about.team.murphy.name'],
+        role: t['about.team.murphy.role'],
+        imageSource: murphyImage,
+        linkedin: "https://linkedin.com/company/gladtek"
+    },
+    {
+        name: t['about.team.tars.name'],
+        role: t['about.team.tars.role'],
+        imageSource: tarsImage,
+        github: "https://github.com/gladtek"
+    }
+];
+
 ---
 
 <Layout title="About Us - Astro Boilerplate" description="Learn about our mission and team.">
@@ -60,55 +100,26 @@ const timelineItems = [
           <div class="mb-24">
              <Heading level={2} class="text-center mb-12">{t['about.why.title']}</Heading>
              <FeaturesList>
-                <FeatureItem title={t['about.feat.fast']} description={t['about.feat.fast.desc']}>
-                    <Zap slot="icon" className="w-6 h-6" />
-                </FeatureItem>
-                <FeatureItem title={t['about.feat.secure']} description={t['about.feat.secure.desc']}>
-                    <Shield slot="icon" className="w-6 h-6" />
-                </FeatureItem>
-                <FeatureItem title={t['about.feat.responsive']} description={t['about.feat.responsive.desc']}>
-                    <Smartphone slot="icon" className="w-6 h-6" />
-                </FeatureItem>
-                <FeatureItem title={t['about.feat.seo']} description={t['about.feat.seo.desc']}>
-                    <Globe slot="icon" className="w-6 h-6" />
-                </FeatureItem>
-                <FeatureItem title={t['about.feat.dev']} description={t['about.feat.dev.desc']}>
-                    <Code slot="icon" className="w-6 h-6" />
-                </FeatureItem>
-                <FeatureItem title={t['about.feat.comp']} description={t['about.feat.comp.desc']}>
-                    <Layers slot="icon" className="w-6 h-6" />
-                </FeatureItem>
+                {aboutBenefits.map((benefit) => (
+                    <FeatureItem title={benefit.title} description={benefit.description}>
+                        <benefit.icon slot="icon" className="w-6 h-6" />
+                    </FeatureItem>
+                ))}
              </FeaturesList>
           </div>
 
           <div>
             <TeamSection title={t['about.team.title']}>
-              <TeamMember
-                name={t['about.team.cooper.name']}
-                role={t['about.team.cooper.role']}
-                image={cooperImage}
-                github="https://github.com/gladtek"
-                linkedin="https://linkedin.com/company/gladtek"
-              />
-              <TeamMember
-                name={t['about.team.brand.name']}
-                role={t['about.team.brand.role']}
-                image={brandImage}
-                twitter="https://github.com/gladtek"
-                linkedin="https://linkedin.com/company/gladtek"
-              />
-              <TeamMember
-                name={t['about.team.murphy.name']}
-                role={t['about.team.murphy.role']}
-                image={murphyImage}
-                linkedin="https://linkedin.com/company/gladtek"
-              />
-              <TeamMember
-                name={t['about.team.tars.name']}
-                role={t['about.team.tars.role']}
-                image={tarsImage}
-                github="https://github.com/gladtek"
-              />
+              {teamMembers.map((member) => (
+                <TeamMember
+                    name={member.name}
+                    role={member.role}
+                    image={member.imageSource}
+                    github={member.github}
+                    linkedin={member.linkedin}
+                    twitter={member.twitter}
+                />
+              ))}
             </TeamSection>
           </div>
       </Container>

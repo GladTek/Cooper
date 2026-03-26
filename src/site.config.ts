@@ -1,4 +1,4 @@
-import type { Facebook } from "lucide-react";
+
 
 export const siteConfig = {
   name: 'Cooper',
@@ -16,7 +16,7 @@ export const siteConfig = {
   },
   announcement: {
     enabled: true,
-    id: 'launch_v1', // Change this ID to reshow the banner
+    id: 'upgrade_v1_1_0', // Change this ID to reshow the banner
     link: '/changelog',
     localizeLink: true, // Set to true to apply i18n routing to the link, false for external/absolute links
   },
@@ -38,23 +38,22 @@ export const siteConfig = {
     }
   },
   analytics: {
-    alwaysLoad: false, // Set to true to bypass cookie consent check
+    alwaysLoad: import.meta.env.ANALYTICS_ALWAYS_LOAD === 'true',
     vendors: {
       googleAnalytics: {
-        id: 'G-XXXXXXXXXX', // e.g. 'G-XXXXXXXXXX'
-        enabled: false,
+        id: import.meta.env.GA_ID || '',
+        enabled: import.meta.env.GA_ENABLED === 'true',
       },
       rybbit: {
-        id: "your-site-id", // e.g. 'your-site-id'
-        src: 'https://analytics.gladtek.cloud/api/script.js', // Default source
-        enabled: false,
+        id: import.meta.env.RYBBIT_ID || '',
+        src: import.meta.env.RYBBIT_SRC || 'https://rybbit.example.com/api/script.js',
+        enabled: import.meta.env.RYBBIT_ENABLED === 'true',
       },
       umami: {
-        id: "your-website-id", // e.g. 'your-website-id'
-        src: 'https://analytics.umami.is/script.js', // Default source
-        enabled: false,
+        id: import.meta.env.UMAMI_ID || '',
+        src: import.meta.env.UMAMI_SRC || 'https://analytics.umami.is/script.js',
+        enabled: import.meta.env.UMAMI_ENABLED === 'true',
       },
-      // Add other vendors here (e.g. Plausible, Fathom)
     },
   },
   dateOptions: {

@@ -40,8 +40,6 @@ const { vendors, alwaysLoad } = siteConfig.analytics;
         umamiScript.src = vendors.umami.src || 'https://analytics.umami.is/script.js';
         document.head.appendChild(umamiScript);
     }
-    
-    console.log('Analytics loaded');
   };
 
   // Check for force load or existing consent

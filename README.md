@@ -1,6 +1,6 @@
 # The Ultimate Astro Boilerplate
 
-The most advanced, batteries-included template for building blazing-fast SaaS, AI tools, and modern web applications with Astro 5, Tailwind CSS 4, and React.
+The most advanced, batteries-included template for building blazing-fast SaaS, AI tools, and modern web applications with Astro 6, Tailwind CSS 4, and React.
 
 <p align="center">
   <a href="https://deploy.workers.cloudflare.com/?url=https://github.com/GladTek/Cooper">
@@ -29,7 +29,7 @@ We categorize components into functional layers to ensure a clear separation of 
 - **Common (Utilities)**: System-level utilities like `ThemeToggle`, `LanguagePicker`, and `CookieConsent`.
 
 ### 2. Documentation-First Approach
-The project features a high-performance documentation engine powered by **MDX** and **Pagefind**:
+The project features a high-performance documentation engine powered by **MDX** and **Fuse.js**:
 - **Categorized Sidebar**: Documentation is automatically grouped by folder (e.g., `ui`, `sections`, `layout`).
 - **Premium Typography**: Custom-styled prose optimized for readability.
 - **Deep Linking**: Automatic anchor links and perfect scroll alignment with a sticky header.
@@ -63,7 +63,7 @@ src/
 ## Features
 
 ### Core Stack
-- **Astro 5**: The latest version of the web framework for content-driven websites.
+- **Astro 6**: The latest version of the web framework for content-driven websites.
 - **Tailwind CSS 4**: Zero-config, engine-integrated utility-first CSS.
 - **React 19**: Powered by React 19 for modern concurrent rendering.
 - **TypeScript**: 100% type-safe codebase.

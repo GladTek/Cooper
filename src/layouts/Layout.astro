@@ -24,7 +24,6 @@ import { siteConfig, ACTION_LINKS } from '~/site.config';
 
 import { defaultLang } from '~/i18n/ui';
 import { isRtl, useTranslations } from '~/i18n/utils';
-import { getRelativeLocaleUrl } from 'astro:i18n';
 
 const { lang = defaultLang } = Astro.params;
 const t = useTranslations(lang);
@@ -101,13 +100,6 @@ const dir = isRtl(lang) ? 'rtl' : 'ltr';
                 document.documentElement.classList.remove('dark');
             }
         </script>
-        {/* Pagefind UI assets are now lazily loaded in the Search component to improve LCP/FCP */}
-        {/* siteConfig.search.enabled && import.meta.env.PROD && (
-            <>
-                <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-                <script src="/pagefind/pagefind-ui.js" is:inline></script>
-            </>
-        ) */}
         <Analytics />
         <slot name="head" />
 		</head>
@@ -121,7 +113,7 @@ const dir = isRtl(lang) ? 'rtl' : 'ltr';
                     message={t['announcement.message']}
                     link={
                         siteConfig.announcement.localizeLink && siteConfig.announcement.link
-                            ? getRelativeLocaleUrl(lang, siteConfig.announcement.link)
+                            ? `/${lang}${siteConfig.announcement.link.startsWith('/') ? siteConfig.announcement.link : '/' + siteConfig.announcement.link}`
                             : siteConfig.announcement.link
                     }
                     linkText={t['announcement.action']}
@@ -129,7 +121,7 @@ const dir = isRtl(lang) ? 'rtl' : 'ltr';
             )}
             <Header availableLangs={availableLangs} />
         </div>
-		<main data-pagefind-body>
+		<main>
 			<slot />
 		</main>
         <CookieConsent />

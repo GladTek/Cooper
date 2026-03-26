@@ -16,7 +16,7 @@ export function parseProperties(content: string): Record<string, string> {
   return result;
 }
 
-const locales = import.meta.glob('./locales/*.properties', { query: '?raw', eager: true, import: 'default' });
+const locales = import.meta.glob('./locales/*.properties', { query: '?raw', eager: true });
 
 export const languages: Record<string, string> = {};
 export const ui: Record<string, Record<string, string>> = {};
@@ -24,7 +24,7 @@ export const ui: Record<string, Record<string, string>> = {};
 for (const path in locales) {
   const code = path.match(/\/([a-z]{2})\.properties$/)?.[1];
   if (code) {
-    const content = locales[path] as string;
+    const content = (locales[path] as { default: string }).default;
     const props = parseProperties(content);
     ui[code] = props;
     languages[code] = props['system.language_name'] || code.toUpperCase();

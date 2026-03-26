@@ -1,0 +1,5 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "cooper",
+	"compatibility_date": "2026-03-17"
+}

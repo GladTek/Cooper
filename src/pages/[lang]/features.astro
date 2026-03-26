@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import Layout from '~/layouts/Layout.astro';
 import PageHeader from '~/components/layout/PageHeader.astro';
 import DeveloperExperience from '~/components/sections/DeveloperExperience.astro';
@@ -137,23 +138,23 @@ const features = [
             <DeveloperExperience 
                 title={t['features.dev.title']}
                 features={[
-                    "Native support for Astro 5 Content Collections",
-                    "Tailwind CSS 4 with zero-config Vite integration",
-                    "Pre-configured ESLint, Prettier, and TypeScript",
-                    "Optimized for Vercel, Netlify, and Cloudflare Pages",
-                    "Automatic Sitemap and SEO meta-tag generation"
+                    t['features.dev.1'],
+                    t['features.dev.2'],
+                    t['features.dev.3'],
+                    t['features.dev.4'],
+                    t['features.dev.5']
                 ]}
                 terminal={{
-                    comment: "Start your next project",
+                    comment: t['features.dev.terminal.comment'],
                     command: {
                         tool: "npx",
                         args: "@gladtek/launch-cooper@latest ./my-stellar-app"
                     },
                     successSteps: [
-                        "Dependencies installed successfully",
-                        "Environment configured"
+                        t['features.dev.terminal.success.1'],
+                        t['features.dev.terminal.success.2']
                     ],
-                    readyMessage: "Ready to build something amazing!"
+                    readyMessage: t['features.dev.terminal.ready']
                 }}
             />
         </Container>

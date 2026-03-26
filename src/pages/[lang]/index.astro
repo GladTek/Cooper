@@ -1,14 +1,19 @@
-
 ---
+export const prerender = true;
 import { languages, defaultLang } from '~/i18n/ui';
 import { isRtl, useTranslations } from '~/i18n/utils';
 import { Image } from 'astro:assets';
 import bentoCode from '~/assets/bento-code.jpg';
+import logoVite from '~/assets/logos/Vite.js.png';
+import logoCloudflare from '~/assets/logos/Cloudflare.png';
+import logoAstro from '~/assets/logos/Astro.png';
+import logoReact from '~/assets/logos/React.png';
+import logoTailwind from '~/assets/logos/Tailwind.png';
+import logoFramer from '~/assets/logos/motion.png';
 import Layout from '~/layouts/Layout.astro';
 import Schema from '~/components/layout/Schema.astro';
 import Hero from '~/components/sections/Hero.astro';
 import Section from '~/components/layout/Section.astro';
-// posts execution moved to LatestPosts component
 import LatestPosts from '~/components/sections/LatestPosts.astro';
 import BentoGrid from '~/components/sections/BentoGrid.astro';
 import BentoItem from '~/components/ui/BentoItem.astro';
@@ -34,12 +39,44 @@ const { lang = defaultLang } = Astro.params;
 const t = useTranslations(lang);
 
 const logos = [
-  { name: 'Vite', src: 'https://vitejs.dev/logo.svg', description: t['logo.vite.desc'] },
-  { name: 'Cloudflare', src: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Cloudflare_Logo.svg', description: t['logo.cloudflare.desc'] },
-  { name: 'Astro', src: 'https://astro.build/assets/press/astro-logo-dark.svg', description: t['logo.astro.desc'] },
-  { name: 'React', src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png', description: t['logo.react.desc'] },
-  { name: 'Tailwind CSS', src: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg', description: t['logo.tailwind.desc'] },
-  { name: 'Framer Motion', src: 'https://pagepro.co/blog/wp-content/uploads/2020/03/framer-motion.png', description: t['logo.framer.desc'] },
+  { name: 'Vite', src: logoVite, description: t['logo.vite.desc'] },
+  { name: 'Cloudflare', src: logoCloudflare, description: t['logo.cloudflare.desc'] },
+  { name: 'Astro', src: logoAstro, description: t['logo.astro.desc'] },
+  { name: 'React', src: logoReact, description: t['logo.react.desc'] },
+  { name: 'Tailwind CSS', src: logoTailwind, description: t['logo.tailwind.desc'] },
+  { name: 'Framer Motion', src: logoFramer, description: t['logo.framer.desc'] },
+];
+
+const benefits = [
+  { title: t['benefits.1.title'], description: t['benefits.1.desc'], icon: Settings },
+  { title: t['benefits.2.title'], description: t['benefits.2.desc'], icon: FileCode },
+  { title: t['benefits.3.title'], description: t['benefits.3.desc'], icon: Search },
+  { title: t['benefits.4.title'], description: t['benefits.4.desc'], icon: Moon },
+  { title: t['benefits.5.title'], description: t['benefits.5.desc'], icon: Eye },
+  { title: t['benefits.6.title'], description: t['benefits.6.desc'], icon: Globe },
+];
+
+const stats = [
+  { value: "10k+", label: t['stats.downloads'] },
+  { value: "99.9%", label: t['stats.uptime'] },
+  { value: "50M+", label: t['stats.requests'] },
+  { value: "24/7", label: t['stats.support'] },
+];
+
+const testimonials = [
+  { text: t['testimonials.1.text'], author: t['testimonials.1.author'], role: t['testimonials.1.role'] },
+  { text: t['testimonials.2.text'], author: t['testimonials.2.author'], role: t['testimonials.2.role'] },
+  { text: t['testimonials.3.text'], author: t['testimonials.3.author'], role: t['testimonials.3.role'] },
+  { text: t['testimonials.4.text'], author: t['testimonials.4.author'], role: t['testimonials.4.role'] },
+  { text: t['testimonials.5.text'], author: t['testimonials.5.author'], role: t['testimonials.5.role'] },
+];
+
+const homeFaqs = [
+  { question: t['faq.home.1.q'], answer: t['faq.home.1.a'] },
+  { question: t['faq.home.2.q'], answer: t['faq.home.2.a'] },
+  { question: t['faq.home.3.q'], answer: t['faq.home.3.a'] },
+  { question: t['faq.home.4.q'], answer: t['faq.home.4.a'] },
+  { question: t['faq.home.5.q'], answer: t['faq.home.5.a'] },
 ];
 
 ---
@@ -87,8 +124,6 @@ const logos = [
     
     <LogoCloud title={t['logo.title']} logos={logos} />
     
-
-
     <Section class="py-0 overflow-visible">
     <BentoGrid 
         title={t['bento.title']}
@@ -167,24 +202,11 @@ const logos = [
             <p class="text-muted-foreground">{t['benefits.subtitle']}</p>
         </div>
         <FeaturesList>
-            <FeatureItem title={t['benefits.1.title']} description={t['benefits.1.desc']}>
-                <Settings slot="icon" className="w-6 h-6" />
-            </FeatureItem>
-            <FeatureItem title={t['benefits.2.title']} description={t['benefits.2.desc']}>
-                <FileCode slot="icon" className="w-6 h-6" />
-            </FeatureItem>
-            <FeatureItem title={t['benefits.3.title']} description={t['benefits.3.desc']}>
-                <Search slot="icon" className="w-6 h-6" />
-            </FeatureItem>
-            <FeatureItem title={t['benefits.4.title']} description={t['benefits.4.desc']}>
-                <Moon slot="icon" className="w-6 h-6" />
-            </FeatureItem>
-            <FeatureItem title={t['benefits.5.title']} description={t['benefits.5.desc']}>
-                <Eye slot="icon" className="w-6 h-6" />
-            </FeatureItem>
-            <FeatureItem title={t['benefits.6.title']} description={t['benefits.6.desc']}>
-                <Globe slot="icon" className="w-6 h-6" />
-            </FeatureItem>
+            {benefits.map((benefit) => (
+                <FeatureItem title={benefit.title} description={benefit.description}>
+                    <benefit.icon slot="icon" className="w-6 h-6" />
+                </FeatureItem>
+            ))}
         </FeaturesList>
     </Section>
 
@@ -200,68 +222,28 @@ const logos = [
 
     <Section class="py-0 overflow-visible">
     <Stats>
-        <StatItem value="10k+" label={t['stats.downloads']} />
-        <StatItem value="99.9%" label={t['stats.uptime']} />
-        <StatItem value="50M+" label={t['stats.requests']} />
-        <StatItem value="24/7" label={t['stats.support']} />
+        {stats.map((stat) => (
+            <StatItem value={stat.value} label={stat.label} />
+        ))}
     </Stats>
     </Section>
 
     <Section class="py-0 overflow-visible">
     <Testimonials>
-      <Testimonial 
-        text={t['testimonials.1.text']}
-        author={t['testimonials.1.author']}
-        role={t['testimonials.1.role']}
-      />
-      <Testimonial 
-        text={t['testimonials.2.text']}
-        author={t['testimonials.2.author']}
-        role={t['testimonials.2.role']}
-      />
-      <Testimonial 
-        text={t['testimonials.3.text']}
-        author={t['testimonials.3.author']}
-        role={t['testimonials.3.role']}
-      />
-      <Testimonial 
-        text={t['testimonials.4.text']}
-        author={t['testimonials.4.author']}
-        role={t['testimonials.4.role']}
-      />
-      <Testimonial 
-        text={t['testimonials.5.text']}
-        author={t['testimonials.5.author']}
-        role={t['testimonials.5.role']}
-      />
+      {testimonials.map((testimonial) => (
+        <Testimonial 
+          text={testimonial.text}
+          author={testimonial.author}
+          role={testimonial.role}
+        />
+      ))}
     </Testimonials>
     </Section>
 
     <LatestPosts count={6}/>
 
     <Section class="py-0 overflow-visible">
-    <FAQ items={[
-        {
-          question: t['faq.home.1.q'],
-          answer: t['faq.home.1.a']
-        },
-        {
-          question: t['faq.home.2.q'],
-          answer: t['faq.home.2.a']
-        },
-        {
-          question: t['faq.home.3.q'],
-          answer: t['faq.home.3.a']
-        },
-        {
-          question: t['faq.home.4.q'],
-          answer: t['faq.home.4.a']
-        },
-        {
-          question: t['faq.home.5.q'],
-          answer: t['faq.home.5.a']
-        }
-    ]} />
+    <FAQ items={homeFaqs} />
     </Section>
 
     <CTA 
@@ -271,7 +253,5 @@ const logos = [
         secondaryBtn={{ text: t['cta.secondary'], href: `/${lang}/contact` }}
         disclaimer={t['cta.disclaimer']}
     />
-
-    <OpenSourceNotification lang={lang} />
 
 </Layout>
