@@ -1,3 +1,6 @@
 [build]
   command = "npm run build:netlify"
   publish = "dist"
+
+[build.environment]
+  NPM_FLAGS = "--legacy-peer-deps"
