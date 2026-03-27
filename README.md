@@ -16,6 +16,14 @@ The most advanced, batteries-included template for building blazing-fast SaaS, A
   </a>
 </p>
 
+## Live Demos
+
+| Platform   | URL                                      |
+| :--------- | :--------------------------------------- |
+| **Cloudflare** | [https://cooper.gladtek.com/](https://cooper.gladtek.com/) |
+| **Netlify**    | [https://astro-cooper.netlify.app/](https://astro-cooper.netlify.app/) |
+| **Vercel**     | [https://astro-cooper.vercel.app/](https://astro-cooper.vercel.app/) |
+
 ## Core Architectural Strategies
 
 This boilerplate is built on several key architectural pillars designed for scale, performance, and developer experience.
