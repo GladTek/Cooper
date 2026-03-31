@@ -20,9 +20,9 @@ const showPicker = displayLanguages.length > 1;
 
 {showPicker && (
 <div class="relative group language-picker">
-    <button id="language-toggle" class="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors focus:outline-none" aria-label="Select Language" aria-expanded="false">
+    <button id="language-toggle" class="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 p-2 rounded-lg transition-all focus:outline-none cursor-pointer" aria-label="Select Language" aria-expanded="false">
         <Globe className="w-4 h-4" />
-        <span class="uppercase">{lang}</span>
+        <span class="uppercase font-bold">{lang}</span>
     </button>
     <div id="language-menu" class="absolute right-0 top-full mt-2 w-32 bg-background border border-border rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
         <ul class="py-1">
