@@ -19,9 +19,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.8",
     "@astrojs/cloudflare": "^13.1.4",
-    "@astrojs/language-server": "^2.16.6",
     "@astrojs/mdx": "^5.0.2",
     "@astrojs/netlify": "^7.0.5",
     "@astrojs/node": "^10.0.4",
@@ -29,8 +27,6 @@
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
     "@astrojs/vercel": "^8.0.4",
-    "@tailwindcss/typography": "^0.5.19",
-    "@tailwindcss/vite": "^4.1.7",
     "astro": "^6.1.0",
     "astro-embed": "^0.9.2",
     "astro-mermaid": "^1.1.0",
@@ -43,16 +39,20 @@
     "motion": "^12.23.26",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tailwind-merge": "^3.5.0",
+    "tailwind-merge": "^3.5.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/language-server": "^2.16.6",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.7",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "astro-compress": "^2.3.8",
+    "cross-env": "^10.1.0",
     "tailwindcss": "^4.1.7",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^6.0.2",
     "wrangler": "^4.78.0"
-  },
-  "devDependencies": {
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "astro-compress": "^2.3.8",
-    "cross-env": "^10.1.0"
   }
 }
