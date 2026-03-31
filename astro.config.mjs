@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -144,6 +144,18 @@ export default defineConfig({
         'import.meta.env.DEFAULT_LOCALE': JSON.stringify(DEFAULT_LOCALE)
     }
   },
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Inter",
+      cssVariable: "--font-inter",
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Outfit",
+      cssVariable: "--font-outfit",
+    },
+  ],
   i18n: {
     defaultLocale: DEFAULT_LOCALE,
     locales: ["en", "ar", "fr", "de"],

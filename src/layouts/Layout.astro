@@ -19,6 +19,7 @@ interface Props {
     children?: any;
 }
 
+import { Font } from "astro:assets";
 import { siteConfig, ACTION_LINKS } from '~/site.config';
 
 
@@ -45,6 +46,8 @@ const dir = isRtl(lang) ? 'rtl' : 'ltr';
 <!doctype html>
 <html lang={lang} dir={dir}>
 	<head>
+        <Font cssVariable="--font-inter" />
+        <Font cssVariable="--font-outfit" />
         <SEO 
             title={title} 
             description={description} 

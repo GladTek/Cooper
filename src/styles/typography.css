@@ -18,7 +18,7 @@
   }
 
   .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-outfit), sans-serif;
     letter-spacing: -0.02em;
     scroll-margin-top: 6rem;
     position: relative;

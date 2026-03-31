@@ -28,7 +28,7 @@
     "@astrojs/react": "^5.0.1",
     "@astrojs/rss": "^4.0.17",
     "@astrojs/sitemap": "^3.7.1",
-    "@astrojs/vercel": "^10.0.3",
+    "@astrojs/vercel": "^8.0.4",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.7",
     "astro": "^6.1.0",
@@ -43,11 +43,11 @@
     "motion": "^12.23.26",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tailwind-merge": "^2.2.0",
+    "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.7",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "^5.9.3",
-    "wrangler": "^4.77.0"
+    "typescript": "^6.0.2",
+    "wrangler": "^4.78.0"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",
