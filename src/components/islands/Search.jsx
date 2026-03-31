@@ -10,7 +10,7 @@ const POPULAR_LINKS = [
   { label: "Blog", href: "/blog/", icon: FileText },
 ];
 
-export default function Search({ placeholder = "Search...", lang = "en" }) {
+export default function Search({ placeholder = "Search...", lang = "en", devModalLabels = {} }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
