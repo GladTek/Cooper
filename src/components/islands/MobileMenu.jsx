@@ -30,7 +30,7 @@ export default function MobileMenu({
         className="p-2 text-foreground hover:bg-foreground/5 rounded-md transition-colors z-50 relative"
         aria-label="Open Mobile Menu"
         aria-expanded={isOpen}
-        aria-controls="mobile-menu-panel"
+        aria-controls={isOpen ? "mobile-menu-panel" : undefined}
       >
         <Menu className="w-6 h-6" aria-hidden="true" />
       </button>
@@ -44,7 +44,7 @@ export default function MobileMenu({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-[60]"
+              className="fixed inset-0 bg-background/60 backdrop-blur-sm z-60"
               aria-hidden="true"
             />
 
@@ -58,7 +58,7 @@ export default function MobileMenu({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed inset-0 md:inset-auto md:top-0 md:right-0 md:h-full md:w-96 bg-background md:border-l md:border-foreground/10 md:shadow-2xl z-[70] p-6 flex flex-col h-[100dvh] md:h-full"
+              className="fixed inset-0 md:inset-auto md:top-0 md:right-0 md:w-96 bg-background md:border-l md:border-foreground/10 md:shadow-2xl z-70 p-6 flex flex-col h-dvh md:h-full"
             >
               <div className="flex justify-between items-center mb-6">
                 <span className="text-2xl font-bold text-primary md:text-lg">{labels.menu}</span>
@@ -139,7 +139,7 @@ export default function MobileMenu({
               <div className="pt-6 md:pt-8 border-t border-foreground/10 flex flex-col gap-4 mt-auto">
                  <a 
                     href={ACTION_LINKS.primary.href}
-                    className="w-full py-3 px-4 bg-primary text-white text-center font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25"
+                    className="w-full py-3 px-4 bg-primary text-primary-foreground text-center font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg hover:shadow-primary/25"
                   >
                     {labels.getStarted}
                   </a>
