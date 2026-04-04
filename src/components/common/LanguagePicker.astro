@@ -49,6 +49,11 @@ const showPicker = displayLanguages.length > 1;
 
         if (!toggle || !menu || !container) return;
 
+        const closeMenu = () => {
+            menu.classList.remove('!opacity-100', '!visible');
+            toggle.setAttribute('aria-expanded', 'false');
+        };
+
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
             const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
@@ -57,10 +62,24 @@ const showPicker = displayLanguages.length > 1;
             menu.classList.toggle('!visible');
         });
 
+        // Close on Esc key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        // Close when clicking outside
         document.addEventListener('click', (e) => {
             if (!container.contains(e.target as Node)) {
-                menu.classList.remove('!opacity-100', '!visible');
-                toggle.setAttribute('aria-expanded', 'false');
+                closeMenu();
+            }
+        });
+
+        // Close when focus leaves the container
+        container.addEventListener('focusout', (e) => {
+            if (!container.contains(e.relatedTarget as Node)) {
+                closeMenu();
             }
         });
     }
