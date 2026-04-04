@@ -41,7 +41,7 @@ const isBoxed = variant === 'boxed';
 
     <div class={
       isBoxed 
-        ? "p-12 rounded-3xl bg-primary text-white text-center relative overflow-hidden group shadow-2xl shadow-primary/25"
+        ? "p-12 rounded-3xl bg-primary text-primary-foreground text-center relative overflow-hidden group shadow-2xl shadow-primary/25"
         : "max-w-4xl mx-auto px-6 relative z-10 text-center"
     }>
         {isBoxed && (
@@ -50,12 +50,12 @@ const isBoxed = variant === 'boxed';
 
         <h2 class={isBoxed ? "text-3xl font-bold mb-4 relative z-10" : "text-5xl md:text-7xl font-display font-bold mb-8"} set:html={title} />
         
-        <p class={isBoxed ? "text-white/80 mb-8 max-w-md mx-auto relative z-10" : "text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"}>
+        <p class={isBoxed ? "opacity-80 mb-8 max-w-md mx-auto relative z-10" : "text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"}>
             {description}
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center relative z-10">
-            <Button href={primaryBtn.href} size="lg" class={isBoxed ? "bg-white text-primary hover:bg-white/90 shadow-none border-none border-transparent px-8 py-3" : "px-10 py-5 text-lg rounded-full"}>
+            <Button href={primaryBtn.href} size="lg" class={isBoxed ? "bg-white text-black hover:bg-white/90 shadow-none border-none border-transparent px-8 py-3" : "px-10 py-5 text-lg rounded-full"}>
               {primaryBtn.text}
             </Button>
              <Button 
