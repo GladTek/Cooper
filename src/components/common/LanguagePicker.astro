@@ -20,7 +20,7 @@ const showPicker = displayLanguages.length > 1;
 
 {showPicker && (
 <div class="relative group language-picker">
-    <button id="language-toggle" class="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 p-2 rounded-lg transition-all focus:outline-none cursor-pointer" aria-label="Select Language" aria-expanded="false">
+    <button id="language-toggle" class="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary hover:bg-muted/50 p-2 rounded-lg transition-all focus:outline-none cursor-pointer" aria-label={`Select Language (${lang.toUpperCase()})`} aria-expanded="false" aria-haspopup="menu" aria-controls="language-menu">
         <Globe className="w-4 h-4" />
         <span class="uppercase font-bold">{lang}</span>
     </button>
@@ -77,8 +77,8 @@ const showPicker = displayLanguages.length > 1;
         });
 
         // Close when focus leaves the container
-        container.addEventListener('focusout', (e) => {
-            if (!container.contains(e.relatedTarget as Node)) {
+        container.addEventListener('focusout', (e: Event) => {
+            if (!container.contains((e as FocusEvent).relatedTarget as Node)) {
                 closeMenu();
             }
         });
