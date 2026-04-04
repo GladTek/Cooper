@@ -46,7 +46,7 @@ const entries = (await getCollection('changelog'))
                             isSecurity={entry.data.isSecurity}
                             detailsUrl={entry.data.detailsUrl}
                             migrationUrl={entry.data.migrationUrl}
-                            body={entry.body}
+                            body={entry.body || ""}
                             lang={lang}
                         >
                             <Content />

@@ -80,7 +80,7 @@ const steps = [
               </div>
               <button 
                   id="btn-step-1"
-                  class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-4"
+                  class="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-4"
               >
                   {t['checkout.btn.continue']} <ArrowRight className="w-4 h-4" />
               </button>
@@ -94,12 +94,13 @@ const steps = [
             
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1.5">{t['checkout.label.card']}</label>
+                    <label for="card-number" class="block text-sm font-medium mb-1.5">{t['checkout.label.card']}</label>
                     <div class="relative">
                         <div class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground flex items-center justify-center">
                              <CreditCard className="w-5 h-5" />
                         </div>
                         <input 
+                            id="card-number"
                             type="text" 
                             class="w-full bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl px-10 py-3 focus:outline-none focus:border-primary transition-colors font-mono text-foreground dark:text-white"
                             placeholder={t['checkout.placeholder.card']}
@@ -108,20 +109,22 @@ const steps = [
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                         <div>
-                        <label class="block text-sm font-medium mb-1.5">{t['checkout.label.expiry']}</label>
+                        <label for="expiry" class="block text-sm font-medium mb-1.5">{t['checkout.label.expiry']}</label>
                         <input 
+                            id="expiry"
                             type="text" 
                             class="w-full bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors text-center font-mono text-foreground dark:text-white"
                             placeholder={t['checkout.placeholder.expiry']}
                         />
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1.5">{t['checkout.label.cvc']}</label>
+                        <label for="cvc" class="block text-sm font-medium mb-1.5">{t['checkout.label.cvc']}</label>
                         <div class="relative">
                              <div class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground flex items-center justify-center">
                                 <Lock className="w-4 h-4" />
                             </div>
                             <input 
+                                id="cvc"
                                 type="text" 
                                 class="w-full bg-white dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl px-10 py-3 focus:outline-none focus:border-primary transition-colors font-mono text-foreground dark:text-white"
                                 placeholder={t['checkout.placeholder.cvc']}
@@ -132,7 +135,7 @@ const steps = [
                 
                 <button 
                     id="btn-step-2"
-                    class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
+                    class="w-full bg-primary text-primary-foreground font-bold py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
                 >
                     <span class="normal-state flex items-center gap-2">
                         {t['checkout.btn.complete']} {planDisplay && `• ${planDisplay}`}
@@ -182,7 +185,7 @@ const steps = [
 
             if (currentStep >= stepNum) {
                 circle.classList.remove('bg-background', 'border-black/10', 'dark:border-white/10', 'text-muted-foreground');
-                circle.classList.add('bg-primary', 'border-primary', 'text-white');
+                circle.classList.add('bg-primary', 'border-primary', 'text-primary-foreground');
                 
                 label.classList.remove('text-muted-foreground');
                 label.classList.add('text-primary');

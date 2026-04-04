@@ -70,7 +70,7 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
     <>
       <button
         onClick={() => setOpen(true)}
-        aria-label={placeholder}
+        aria-label={`${placeholder} (⌘K)`}
         className="flex items-center gap-2 px-3 py-1.5 text-sm text-foreground/60 hover:text-foreground bg-foreground/5 hover:bg-foreground/10 border border-foreground/10 rounded-full transition-all hover:scale-105"
       >
         <SearchIcon size={14} />
@@ -107,6 +107,8 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={placeholder}
+                  aria-label={placeholder}
+                  title={placeholder}
                   className="w-full bg-transparent py-4 pl-12 pr-12 text-foreground outline-hidden placeholder:text-foreground/50 text-lg"
                 />
                 <button 

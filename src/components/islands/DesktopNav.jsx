@@ -39,8 +39,8 @@ export default function DesktopNav({ links, currentPath = '/' }) {
                   hoveredIndex === index || isLinkActive ? 'text-primary dark:text-blue-300' : 'text-foreground/70 hover:text-foreground dark:text-white dark:hover:text-blue-300'
                 }`}
                 aria-expanded={hoveredIndex === index}
-                aria-haspopup="true"
-                aria-controls={`dropdown-${index}`}
+                aria-haspopup="menu"
+                aria-controls={hoveredIndex === index ? `dropdown-${index}` : undefined}
                 onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
               >

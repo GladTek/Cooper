@@ -47,7 +47,7 @@ const { name, price, description, features, cta, popular = false } = Astro.props
     href={`/${lang}/checkout?plan=${name.toLowerCase()}`}
     class={`block w-full py-3 px-6 rounded-xl text-center font-medium transition-all ${
         popular 
-        ? 'bg-primary text-white hover:bg-primary/90 hover:scale-105' 
+        ? 'bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105' 
         : 'bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20'
     }`}
   >

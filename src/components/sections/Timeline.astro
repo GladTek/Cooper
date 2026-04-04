@@ -20,7 +20,7 @@ const { items } = Astro.props;
     <div class={`mb-8 flex justify-between items-center w-full ${index % 2 === 0 ? 'flex-row-reverse left-timeline' : 'right-timeline'}`}>
       <div class="order-1 w-5/12"></div>
       <div class="z-20 flex items-center order-1 bg-primary shadow-xl w-8 h-8 rounded-full">
-        <h1 class="mx-auto font-semibold text-lg text-white">{index + 1}</h1>
+        <span class="mx-auto font-semibold text-lg text-white">{index + 1}</span>
       </div>
       <div class={`order-1 w-5/12 px-6 py-4 rounded-lg shadow-xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-2xl`}>
         <span class="mb-3 font-bold text-primary text-sm">{item.date}</span>

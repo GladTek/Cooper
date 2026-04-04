@@ -136,7 +136,7 @@ export default function MobileDocsMenu({ sections, groupedDocs, currentPath }) {
               <div className="p-6 border-t border-foreground/5 bg-foreground/2">
                 <a 
                   href="/docs/getting-started" 
-                  className="flex items-center justify-center w-full px-4 py-3 bg-primary text-white rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all text-sm"
+                  className="flex items-center justify-center w-full px-4 py-3 bg-primary text-primary-foreground rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all text-sm"
                 >
                   Quick Start Guide
                 </a>

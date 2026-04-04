@@ -45,7 +45,7 @@ const primaryHref = ACTION_LINKS.primary.href.startsWith('/docs')
   : `/${lang}${ACTION_LINKS.primary.href.startsWith('/') ? '' : '/'}${ACTION_LINKS.primary.href}`.replace(/\/$/, '');
 ---
 
-<header class="w-full transition-all duration-300 border-b border-foreground/10 bg-background/80 backdrop-blur-md">
+<header id="main-header" class="w-full transition-all duration-500 border-b border-transparent bg-transparent py-4 text-foreground">
   <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
     <a href={`/${lang}`} class="flex items-center gap-3 text-xl font-bold tracking-tight text-primary dark:text-white group">
       {siteConfig.logo && (
@@ -85,16 +85,10 @@ const primaryHref = ACTION_LINKS.primary.href.startsWith('/docs')
     </div>
 
     {/* Mobile/Flyout Menu */}
-    <div class="flex items-center gap-4 flex-shrink-0">
+    <div class="flex items-center gap-4 shrink-0">
       {siteConfig.search.enabled && <Search 
         client:only="react" 
         placeholder={t['search.placeholder']} 
-        devModalLabels={{
-            title: t['dev.search.title'],
-            description: t['dev.search.description'],
-            gotIt: t['dev.search.button.gotIt'],
-            doc: t['dev.search.button.docs']
-        }}
         lang={lang}
       />}
       <LanguagePicker availableLangs={availableLangs} />
@@ -110,7 +104,7 @@ const primaryHref = ACTION_LINKS.primary.href.startsWith('/docs')
       </a>
       <a 
         href={primaryHref}
-        class="hidden md:block px-4 py-2 text-sm font-medium bg-primary text-white rounded-full hover:bg-primary/90 transition-all"
+        class="hidden md:block px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-all"
       >
         {t['hero.getStarted'] || ACTION_LINKS.primary.label}
       </a>
@@ -129,3 +123,27 @@ const primaryHref = ACTION_LINKS.primary.href.startsWith('/docs')
     </div>
   </div>
 </header>
+
+<script>
+  function initHeader() {
+    const header = document.getElementById('main-header');
+    if (!header) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        header.classList.remove('bg-transparent', 'border-transparent', 'py-4');
+        header.classList.add('bg-background/80', 'backdrop-blur-md', 'border-foreground/10', 'py-2', 'shadow-sm');
+      } else {
+        header.classList.add('bg-transparent', 'border-transparent', 'py-4');
+        header.classList.remove('bg-background/80', 'backdrop-blur-md', 'border-foreground/10', 'py-2', 'shadow-sm');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+  }
+
+  // Run on first load and view transitions
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
+</script>

@@ -69,11 +69,12 @@ const {
 
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
+                <caption class="sr-only">{title}</caption>
                 <thead>
                     <tr class="border-b border-white/10">
-                        <th class="py-6 px-6 font-bold text-lg min-w-[200px]">{labels.features}</th>
+                        <th scope="col" class="py-6 px-6 font-bold text-lg min-w-[200px]">{labels.features}</th>
                         {plans.map(plan => (
-                            <th class={`py-6 px-6 font-bold text-lg min-w-[150px] text-center ${plan.popular ? 'text-primary' : ''}`}>
+                            <th scope="col" class={`py-6 px-6 font-bold text-lg min-w-[150px] text-center ${plan.popular ? 'text-primary' : ''}`}>
                                 {plan.name}
                                 {plan.popular && <span class="block text-xs font-normal text-muted-foreground mt-1">{labels.popular}</span>}
                             </th>
@@ -83,14 +84,14 @@ const {
                 <tbody>
                     {features.map(category => (
                         <>
-                            <tr class="bg-white/[0.02]">
+                            <tr class="bg-white/2">
                                 <td colspan="4" class="py-4 px-6 font-semibold text-sm text-muted-foreground uppercase tracking-wider">
                                     {category.category}
                                 </td>
                             </tr>
                             {category.items.map(item => (
-                                <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                                    <td class="py-4 px-6 font-medium">{item.name}</td>
+                                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
+                                    <th scope="row" class="py-4 px-6 font-medium text-left">{item.name}</th>
                                     {plans.map(plan => {
                                         const val = item[plan.key as keyof typeof item];
                                         return (
