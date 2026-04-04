@@ -162,5 +162,24 @@ export default defineConfig({
     routing: {
         prefixDefaultLocale: true
     }
+  },
+  markdown: {
+    rehypePlugins: [
+      () => (tree, file) => {
+        const filePath = file.path || file.history?.[0] || '';
+        // Remove IDs in changelog entries to avoid duplicates on the same page
+        if (filePath.toLowerCase().includes('changelog')) {
+          const visit = (node) => {
+            if (node.type === 'element' && /^h[1-6]$/.test(node.tagName)) {
+              if (node.properties && node.properties.id) {
+                delete node.properties.id;
+              }
+            }
+            if (node.children) node.children.forEach(visit);
+          };
+          visit(tree);
+        }
+      }
+    ]
   }
 });
