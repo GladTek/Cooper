@@ -16,7 +16,7 @@ export const siteConfig = {
   },
   announcement: {
     enabled: true,
-    id: 'upgrade_v1_1_0', // Change this ID to reshow the banner
+    id: 'upgrade_v1_1_1', // Change this ID to reshow the banner
     link: '/changelog',
     localizeLink: true, // Set to true to apply i18n routing to the link, false for external/absolute links
   },
