@@ -1,46 +1,55 @@
 # Cooper
 
-> Premium Astro Boilerplate for SaaS, Startups, and Developers.
+> Premium Astro 6 Boilerplate for SaaS, Startups, and Developers.
 
 ## Summary
 
-This project is a high-performance, SEO-optimized starter built with Astro, Tailwind CSS, and React. It is designed to be the perfect foundation for modern web applications and marketing sites.
+Cooper is a high-performance, SEO-optimized starter built with **Astro 6**, **Tailwind CSS 4**, and **React 19**. It is engineered for speed, accessibility, and exploration, providing a robust foundation for modern web applications with a focus on developer experience and zero-vulnerability security.
 
 ## Architecture
 
-- **Framework**: Astro (Static Site Generation by default)
-- **Styling**: Tailwind CSS + Custom Design System
-- **Interactivity**: React Islands (for complex components like Search, Forms)
-- **Content**: MDX (Docs, Blog, Changelog)
-- **Search**: Pagefind (Static, Client-side)
+- **Framework**: Astro 6.1+ (Static Site Generation with SSR support)
+- **Vite**: Powered by Vite 7 for lightning-fast builds
+- **Styling**: Tailwind CSS 4.2 (CSS-first configuration with high-performance engine)
+- **Interactivity**: React 19 Islands (hydrated only when needed)
+- **Content**: MDX (Docs, Blog, Changelog) with Mermaid diagram support
+- **Search**: Custom multi-language search powered by **Fuse.js**
+- **I18n**: Full internationalization support with **EN**, **FR**, **AR** (RTL), and **DE**
 
 ## Usage
 
 To start a new project with this template, run:
 
 ```bash
-npx create-astro@latest --template GladTek/astro-gladtek-template-v0
+npx create-astro@latest --template GladTek/Cooper
 ```
 
 ## Navigation
 
-- [Home](/) - The landing page demonstrating the "Bento Grid" layout and features.
-- [Documentation](/docs) - Comprehensive guides on using the boilerplate.
-- [Components](/docs/components) - A catalog of available UI components.
-- [Changelog](/changelog) - Version history and updates.
-- [Blog](/blog) - Articles and tutorials.
-- [Pricing](/pricing) - Example pricing tier layout.
-- [Contact](/contact) - Contact form with validation and global config integration.
+- [Home](/) - Modern landing page with "Bento Grid" sections and interactive auras.
+- [Documentation](/docs) - Comprehensive technical guides and component documentation.
+- [Components](/docs/components) - Catalog of premium UI components (Buttons, Cards, Bento, etc.).
+- [Changelog](/changelog) - Version history with unique ID management for accessibility.
+- [Blog](/blog) - Articles and tutorials with MDX and social sharing.
+- [About](/about) - Company narrative and team showcase.
+- [Contact](/contact) - Accessible contact form with global field validation.
 
 ## Features
 
-- **Zero-JS by Default**: Static HTML first, hydration only when needed.
-- **Universal Search**: `Cmd+K` interface powered by Pagefind.
-- **Theme Support**: Built-in Dark/Light mode with persistence.
-- **RSS Feed**: Automatic feed generation at `/rss.xml`.
-- **Sitemap**: Intelligent sitemap generation excluding `noindex` pages.
-- **SEO**: JSON-LD structured data, meta tags, and Open Graph support.
+- **Zero-JS by Default**: Static HTML first, progressive hydration for React islands.
+- **Universal Search**: `Cmd+K` interface with multi-language indexing via Fuse.js.
+- **Accessibility (A11y)**: WCAG 4.5 contrast compliance, semantic heading hierarchy, and ARIA-ready interactive elements.
+- **RTL Support**: Native Right-To-Left support for Arabic (AR) and other RTL languages.
+- **Theme Support**: Built-in Dark/Light mode with persistence and glassmorphism styling.
+- **Sitemap & RSS**: Intelligent generation including `noindex` logic and localized feeds.
+- **Deployment**: Integrated Cloudflare Workers deployment pipeline via `npm run deploy`.
 
 ## Configuration
 
-Site-wide settings (name, description, features toggles, contact info) are managed in `src/site.config.ts`.
+Site-wide settings (name, description, features toggles, social links) are managed in `src/site.config.ts`.
+Localization properties and translations are located in `src/i18n/locales/`.
+
+## Security
+
+- **Audit Status**: 0 vulnerabilities (Last audit: April 2026).
+- **Updates**: Regularly synchronized with official Astro and Tailwind security patches.
