@@ -1,20 +1,14 @@
-# The Ultimate Astro Boilerplate
+# Cooper -The Ultimate Astro Boilerplate
 
-The most advanced, batteries-included template for building blazing-fast SaaS, AI tools, and modern web applications with Astro 6, Tailwind CSS 4, and React.
+The advanced, batteries-included template for building blazing-fast modern web applications with **Astro 6**, **Tailwind CSS 4**, and **React 19**.
 
 <p align="center">
-  <a href="https://deploy.workers.cloudflare.com/?url=https://github.com/GladTek/Cooper">
-    <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Workers" />
-  </a>
-
-  <a href="https://app.netlify.com/start/deploy?repository=https://github.com/GladTek/Cooper">
-    <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />
-  </a>
-
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGladTek%2FCooper">
-    <img src="https://vercel.com/button" alt="Deploy with Vercel" />
-  </a>
+  <img src="https://img.shields.io/github/v/release/gladtek/cooper?color=%231A81FA&label=Latest&logo=%20" alt="Latest Release" />
 </p>
+
+| Cloudflare | Netlify | Vercel |
+| :--- | :--- | :--- |
+| [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/GladTek/Cooper) | [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/GladTek/Cooper) | [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGladTek%2FCooper) |
 
 ## Live Demos
 
@@ -78,7 +72,7 @@ src/
 
 ### Accessibility & Performance
 - **WCAG AA/AAA Compliant**: High-contrast dark/light themes and accessible focus states.
-- **100/100 Lighthouse**: Optimized for Core Web Vitals out of the box.
+- **Higher Lighthouse score**: Optimized for Core Web Vitals out of the box.
 - **Reduced Motion**: Respects system preferences for animations.
 
 ### Premium Components
