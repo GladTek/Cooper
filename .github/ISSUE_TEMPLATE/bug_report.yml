@@ -1,0 +1,80 @@
+name: "🐛 Bug Report"
+description: Report a bug to help us improve Cooper.
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: Cooper Version
+      description: What version of Cooper are you using? (Check package.json)
+      placeholder: e.g., 1.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: adapter
+    attributes:
+      label: Deployment Adapter
+      description: Which Astro adapter are you using?
+      options:
+        - Cloudflare
+        - Vercel
+        - Netlify
+        - Node (SSR)
+        - Static
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: |
+        How can we reproduce the issue?
+        1. Go to '...'
+        2. Click on '....'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Validation
+      description: Please confirm you've followed these steps before submitting.
+      options:
+        - label: I have verified this is not a configuration error on my side.
+          required: true
+        - label: I have checked existing issues to ensure this is not a duplicate.
+          required: true

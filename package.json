@@ -1,7 +1,7 @@
 {
   "name": "@gladtek/cooper",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2-canary",
   "description": "A premium Astro template engineered for the unknown. Built for speed, endurance, and exploration.",
   "engines": {
     "node": ">=22.12.0"

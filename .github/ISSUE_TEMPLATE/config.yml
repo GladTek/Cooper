@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🚀 Launch Cooper CLI
+    url: https://www.npmjs.com/package/@gladtek/launch-cooper
+    about: Use our CLI to initialize a new project instantly.
+  - name: 💬 GladTek Community
+    url: https://gladtek.com/contact
+    about: Get support and share your projects with the community.
