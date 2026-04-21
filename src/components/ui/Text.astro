@@ -2,11 +2,6 @@
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
 
-interface Props {
-  variant?: 'default' | 'muted' | 'lead' | 'large' | 'small';
-  class?: string;
-  as?: string;
-}
 
 const { variant = 'default', class: className, as: Tag = 'p' } = Astro.props;
 

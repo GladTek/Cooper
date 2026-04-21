@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import { languages, defaultLang } from '~/i18n/ui';
-import { isRtl, useTranslations } from '~/i18n/utils';
+import { useTranslations } from '~/i18n/utils';
 import { Image } from 'astro:assets';
 import bentoCode from '~/assets/bento-code.jpg';
 import logoVite from '~/assets/logos/Vite.js.png';
@@ -29,7 +29,6 @@ import CTA from '~/components/sections/CTA.astro';
 import FAQ from '~/components/sections/FAQ.astro';
 import LogoCloud from '~/components/sections/LogoCloud.astro';
 import TechStack from '~/components/sections/TechStack.astro';
-import OpenSourceNotification from '~/components/common/OpenSourceNotification.astro';
 
 export async function getStaticPaths() {
   return Object.keys(languages).map((lang) => ({ params: { lang } }));

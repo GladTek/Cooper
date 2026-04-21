@@ -3,7 +3,6 @@ export const prerender = true;
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '~/layouts/BlogPost.astro';
 
-import { languages } from '~/i18n/ui';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');

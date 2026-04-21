@@ -1,4 +1,4 @@
-# Cooper -The Ultimate Astro Boilerplate
+# Cooper - The Ultimate Astro Boilerplate
 
 The advanced, batteries-included template for building blazing-fast modern web applications with **Astro 6**, **Tailwind CSS 4**, and **React 19**.
 
@@ -37,150 +37,89 @@ The project features a high-performance documentation engine powered by **MDX** 
 - **Deep Linking**: Automatic anchor links and perfect scroll alignment with a sticky header.
 
 ### 3. Type-Safe Internationalization (i18n)
-- **Flat File Dictionary**: Localizations are managed via `.properties` files for clean, type-safe translations.
+- **Flat File Dictionary**: Localizations are managed via type-safe `.ts` and `.properties` files.
 - **RTL Support**: Automatic layout mirroring for languages like Arabic (`/ar/`).
 - **Path Persistence**: Switching languages preserves the current page path.
 
-## Project Structure
+### 4. Robust Testing Suite
+The boilerplate includes a pre-configured, production-ready testing infrastructure:
+- **E2E Testing (Playwright)**: Automated flows for Form Submissions, Search Indexing, Language Switching, and Responsiveness.
+- **Unit/Component Testing (Vitest)**: Fast, reliable testing for core logic and React islands using JSDOM.
 
-```text
-src/
-├── components/        # Categorized Component Library
-│   ├── ui/            # UI Atoms (Buttons, Badges)
-│   ├── sections/      # Marketing Sections (Hero, CTA)
-│   ├── layout/        # Structural Elements (Header, Footer)
-│   ├── blog/          # Content-specific components
-│   └── common/        # Shared Utilities (Toggles, i18n)
-├── content/           # Content Collections
-│   ├── docs/          # Categorized Documentation (MDX)
-│   ├── blog/          # Multilingual Blog Posts
-│   └── config.ts      # Schema Definitions
-├── i18n/              # type-safe translation logic
-├── layouts/           # Page Shells
-├── pages/             # File-based routing
-├── styles/            # CSS (Tailwind 4 + Custom Layers)
-└── site.config.ts     # Centralized Project Configuration
-```
+---
 
 ## Features
 
 ### Core Stack
 - **Astro 6**: The latest version of the web framework for content-driven websites.
-- **Tailwind CSS 4**: Zero-config, engine-integrated utility-first CSS.
-- **React 19**: Powered by React 19 for modern concurrent rendering.
-- **TypeScript**: 100% type-safe codebase.
+- **Tailwind CSS 4**: Engine-integrated utility-first CSS using modern CSS variables.
+- **React 19**: Powered by React 19 for modern concurrent rendering and optimized hydration.
+- **TypeScript**: 100% type-safe codebase (Typescript 6.0+).
 
 ### Accessibility & Performance
-- **WCAG AA/AAA Compliant**: High-contrast dark/light themes and accessible focus states.
-- **Higher Lighthouse score**: Optimized for Core Web Vitals out of the box.
-- **Reduced Motion**: Respects system preferences for animations.
+- **WCAG AA/AAA Compliant**: Accessible color contrast and focus state management.
+- **SSR/Hydration Optimized**: Production-grade Vite configuration resolving common hydration conflicts.
+- **Core Web Vitals**: Precision optimization for LCP and CLS out of the box.
 
-### Premium Components
-- **Bento Grid**: Modern showcase layout for features.
-- **Comparison Table**: Responsive pricing and feature comparison.
-- **Infinite Marquee**: GPU-accelerated scrolling logo cloud.
-- **Advanced FAQ**: Glassmorphic, accessible accordion.
-- **Timeline & Stats**: Interactive roadmaps and animated counters.
+---
 
-## Customization
- 
-The project is designed to be easily customized via a centralized configuration file.
- 
-### 1. Site Configuration
-Edit `src/site.config.ts` to manage:
-- **Identity**: Site name, description, and logo.
-- **Navigation**: Header (`NAV_LINKS`) and Footer (`FOOTER_LINKS`) menus.
-- **Socials**: Social media links in `ACTION_LINKS`.
-- **Analytics**: Google Analytics, Umami, etc.
-- **Features**: Toggle built-in features like the announcement banner or search.
- 
-```typescript
-// src/site.config.ts
-export const siteConfig = {
-  name: 'Cooper',
-  logo: { src: '/logo.svg' },
-  // ...
-};
-```
- 
-### 2. Styling & Theming
-- **Tailwind CSS**: Configured in `src/styles/theme.css` via CSS variables for light/dark modes.
-- **Typography**: Custom fonts and prose styles in `src/styles/typography.css`.
- 
-### 3. Internationalization
-Add new languages or update translations in `src/i18n/locales/`. The project uses strictly typed `.properties` files.
- 
 ## Getting Started
 
 ### Quick Start
-Initialize a new project instantly with our CLI:
+Initialize a new project instantly:
 ```bash
 npx @gladtek/launch-cooper@latest
 ```
 
 ### Manual Setup
-
-1. **Clone the repository**
+1. **Install dependencies**
    ```bash
-   git clone https://github.com/GladTek/Cooper.git
-   cd Cooper
+   pnpm install
    ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment**
-   Copy the example environment file and adjust the variables as needed:
+2. **Configure Environment**
    ```bash
    cp .env.example .env
    ```
-
-4. **Start the dev server**
+3. **Start the dev server**
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
-5. **Deploy to Cloudflare**
-   ```bash
-   npm run deploy
-   # or manually
-   npx wrangler deploy
-   ```
+---
 
-5. **Deploy to Vercel/Netlify**
-   The project supports Vercel and Netlify out of the box. Use the corresponding build command:
+## Testing
 
-   - **Vercel**: `npm run build:vercel`
-   - **Netlify**: `npm run build:netlify`
-   - **Cloudflare**: `npm run build:cloudflare`
-   - **Node.js**: `npm run build` (default)
+Cooper comes with a comprehensive testing suite to ensure stability across deployments.
 
+### End-to-End (E2E)
+We use **Playwright** for full browser testing of critical user journeys.
+```bash
+pnpm run test:e2e        # Run all E2E tests
+pnpm run test:e2e:ui     # Open Playwright UI for debugging
+```
+The suite covers:
+- **Contact Flows**: Form validation and submission states.
+- **I18n**: Correct language rendering and RTL switching.
+- **Search**: Real-time indexing and navigation results.
+- **Responsive**: Mobile menu functionality and layout adjustments.
 
-### Environment Variables
+### Unit & Component
+We use **Vitest** for fast testing of isolated logic and components.
+```bash
+pnpm run test:unit       # Run all unit tests
+pnpm run test:unit:watch # Watch mode
+```
 
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `ADAPTER` | The build adapter (`vercel`, `netlify`, `cloudflare`, `node`). | `node` |
-| `SITE_URL` | The production URL of the site. | `https://cooper.gladtek.com` |
+---
 
+## Deployment
 
-## How To Guides
+The project supports multi-adapter deployment out of the box. Use the corresponding build command:
 
-### Adding a New Component
-1. Decide on the category (`ui`, `sections`, etc.).
-2. Create the `.astro` file in the corresponding `src/components/{category}/` folder.
-3. Import and use it in your pages using the `~/components/...` alias.
-
-### Adding Documentation
-1. Create an `.mdx` file in a subdirectory of `src/content/docs/` (e.g., `src/content/docs/ui/`).
-2. The sidebar will automatically detect the folder and group the page correctly.
-3. Set the `order` in frontmatter to control its position within the group.
-
-### Managing Translations
-1. Add keys to `src/i18n/locales/en.properties` and `ar.properties`.
-2. Access them via the type-safe `t` function in any component.
+- **Cloudflare**: `pnpm run build:cloudflare` (Recommended)
+- **Vercel**: `pnpm run build:vercel`
+- **Netlify**: `pnpm run build:netlify`
+- **Node.js**: `pnpm run build` (Default)
 
 ---
 

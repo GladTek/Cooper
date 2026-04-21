@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, Loader2, Send } from 'lucide-react';
 
+type Status = 'idle' | 'submitting' | 'success' | 'error';
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+interface Errors {
+  [key: string]: string | undefined;
+}
+
 export default function ContactForm() {
-  const [status, setStatus] = useState('idle'); // idle, submitting, success, error
-  const [errors, setErrors] = useState({});
-  const [formData, setFormData] = useState({
+  const [status, setStatus] = useState<Status>('idle');
+  const [errors, setErrors] = useState<Errors>({});
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     message: ''
   });
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors: Errors = {};
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
@@ -31,7 +43,7 @@ export default function ContactForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (!validate()) {
@@ -46,7 +58,7 @@ export default function ContactForm() {
     setFormData({ name: '', email: '', message: '' });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id]: value }));
     // Clear error when user types
@@ -60,6 +72,7 @@ export default function ContactForm() {
       <AnimatePresence mode="wait">
         {status === 'success' ? (
           <motion.div
+            key="success"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -79,6 +92,7 @@ export default function ContactForm() {
           </motion.div>
         ) : (
           <motion.form
+            key="form"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -163,7 +177,7 @@ export default function ContactForm() {
               {status === 'submitting' ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Sending...
+                   Sending...
                 </>
               ) : (
                 <>

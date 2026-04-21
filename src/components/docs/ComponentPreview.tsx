@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Code, Eye } from 'lucide-react';
-import { clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-function cn(...inputs) {
+function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const ComponentPreview = ({ code, children }) => {
-  const [activeTab, setActiveTab] = useState('preview');
+interface ComponentPreviewProps {
+  code: string;
+  children: ReactNode;
+}
+
+const ComponentPreview = ({ code, children }: ComponentPreviewProps) => {
+  const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
 
   return (
     <div className="relative my-4 flex flex-col space-y-2 lg:max-w-[120ch]">

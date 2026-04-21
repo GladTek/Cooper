@@ -2,7 +2,7 @@
 export const prerender = true;
 import Layout from '~/layouts/Layout.astro';
 import { siteConfig } from '~/site.config';
-import ContactForm from '~/components/islands/ContactForm.jsx';
+import ContactForm from '~/components/islands/ContactForm';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import PageHeader from '~/components/layout/PageHeader.astro';
 import Container from '~/components/ui/Container.astro';
@@ -72,7 +72,7 @@ const t = useTranslations(lang);
 
           <!-- Contact Form -->
           <div>
-              <ContactForm client:load />
+              <ContactForm client:only="react" />
           </div>
       </Grid>
   </Container>

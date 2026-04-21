@@ -1,5 +1,5 @@
 ---
-import { Github } from 'lucide-react';
+import BrandIcon from '~/components/common/BrandIcon.astro';
 import ThemeToggle from '~/components/common/ThemeToggle.astro';
 import MobileMenu from '~/components/islands/MobileMenu';
 import DesktopNav from '~/components/islands/DesktopNav';
@@ -100,7 +100,7 @@ const primaryHref = ACTION_LINKS.primary.href.startsWith('/docs')
         class="text-foreground hover:text-foreground/70 dark:text-white dark:hover:text-blue-300 transition-colors hidden md:block"
         aria-label="GitHub"
       >
-        <Github className="w-5 h-5" />
+        <BrandIcon icon="github" className="w-5 h-5" />
       </a>
       <a 
         href={primaryHref}

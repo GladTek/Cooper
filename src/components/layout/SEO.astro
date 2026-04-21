@@ -12,7 +12,6 @@ const { title, description, image, article = false, noindex = false, nofollow = 
 import { siteConfig } from '~/site.config';
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/home';
 const ogImageUrl = image || siteConfig.ogImage;
 
 const robots = [

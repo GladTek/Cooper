@@ -3,15 +3,33 @@ import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
-export default function DesktopNav({ links, currentPath = '/' }) {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+interface NavChild {
+  label: string;
+  href: string;
+  icon?: string;
+  description?: string;
+}
 
-  const isActive = (href) => {
+interface NavLink {
+  label: string;
+  href?: string;
+  children?: NavChild[];
+}
+
+interface DesktopNavProps {
+  links: NavLink[];
+  currentPath?: string;
+}
+
+export default function DesktopNav({ links, currentPath = '/' }: DesktopNavProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const isActive = (href: string) => {
     if (href === '/') return currentPath === '/';
     return currentPath.startsWith(href);
   };
 
-  const handleKeyDown = (e, index) => {
+  const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       setHoveredIndex(hoveredIndex === index ? null : index);
@@ -74,7 +92,7 @@ export default function DesktopNav({ links, currentPath = '/' }) {
                    <div className="p-2 bg-background/95 backdrop-blur-xl border border-foreground/10 rounded-xl shadow-xl shadow-black/5 overflow-hidden">
                        <ul className="flex flex-col gap-1 m-0 p-0 list-none">
                          {link.children.map((child) => {
-                           const Icon = child.icon ? Icons[child.icon] : null;
+                           const Icon = child.icon ? (Icons as any)[child.icon] : null;
                            return (
                            <li key={child.href} role="none">
                              <a

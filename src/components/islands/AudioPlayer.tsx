@@ -1,16 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
-export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
+interface AudioPlayerProps {
+  src: string;
+  title?: string;
+}
+
+type SysStatus = 'IDLE' | 'READY' | 'PLAYING' | 'PAUSED' | 'COMPLETE';
+
+export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [isDocked, setIsDocked] = useState(false);
-  const [sysStatus, setSysStatus] = useState("IDLE");
+  const [sysStatus, setSysStatus] = useState<SysStatus>("IDLE");
   
-  const audioRef = useRef(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   
   // Random data stream for TARS effect
   const [dataStream, setDataStream] = useState("00.00.00");
@@ -102,7 +109,7 @@ export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
     }
   };
 
-  const handleSeek = (e) => {
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = Number(e.target.value);
     if (audioRef.current) {
       audioRef.current.currentTime = newTime;
@@ -110,7 +117,7 @@ export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
     }
   };
 
-  const formatTime = (time) => {
+  const formatTime = (time: number) => {
     if (isNaN(time)) return "00:00";
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -125,7 +132,7 @@ export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
         layout
         initial={false}
         animate={isDocked ? {
-             position: 'fixed',
+             position: 'fixed' as const,
              bottom: 24,
              left: '50%',
              x: '-50%',
@@ -133,18 +140,16 @@ export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
              maxWidth: '600px',
              zIndex: 50,
         } : {
-             position: 'relative',
-             bottom: 'auto',
-             left: 'auto',
+             position: 'relative' as const,
+             bottom: 'auto' as const,
+             left: 'auto' as const,
              x: '0%',
              width: '100%',
              maxWidth: '100%',
              zIndex: 10,
         }}
         transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-        className={`font-mono uppercase text-xs tracking-wider group
-            ${isDocked ? '' : ''}
-        `}
+        className="font-mono uppercase text-xs tracking-wider group"
       >
         {/* Main Chassis */}
         <div className="bg-zinc-900 border-2 border-zinc-700 p-1 shadow-2xl relative overflow-hidden">
@@ -221,7 +226,7 @@ export default function AudioPlayer({ src, title = "AUDIO_LOG_01" }) {
                                     transition={{
                                         duration: 0.2, // Fast, twitchy mechanical movement
                                         repeat: Infinity,
-                                        repeatType: 'reverse',
+                                        repeatType: 'reverse' as const,
                                         delay: i * 0.02,
                                         ease: "linear"
                                     }}

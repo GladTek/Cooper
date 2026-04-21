@@ -1,0 +1,63 @@
+name: pnpm Verification
+
+on:
+  push:
+    branches: [ migration/pnpm ]
+  pull_request:
+    branches: [ migration/pnpm ]
+
+jobs:
+  test:
+    name: Build & Check (pnpm)
+    runs-on: ubuntu-latest
+    env:
+      ADAPTER: cloudflare
+      SITE_URL: ${{ vars.SITE_URL || 'http://localhost:4321' }}
+      ANALYTICS_ALWAYS_LOAD: ${{ vars.ANALYTICS_ALWAYS_LOAD || 'false' }}
+      GA_ID: ${{ secrets.GA_ID }}
+      GA_ENABLED: ${{ vars.GA_ENABLED || 'false' }}
+      RYBBIT_ID: ${{ secrets.RYBBIT_ID }}
+      RYBBIT_SRC: ${{ vars.RYBBIT_SRC || 'https://rybbit.example.com/api/script.js' }}
+      RYBBIT_ENABLED: ${{ vars.RYBBIT_ENABLED || 'false' }}
+      UMAMI_ID: ${{ secrets.UMAMI_ID }}
+      UMAMI_SRC: ${{ vars.UMAMI_SRC || 'https://analytics.umami.is/script.js' }}
+      UMAMI_ENABLED: ${{ vars.UMAMI_ENABLED || 'false' }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Unit Tests (Vitest)
+        run: pnpm run test:unit
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Type Check (Astro & TS)
+        run: pnpm exec astro check
+
+      - name: Verify Production Build
+        run: pnpm run build
+
+      - name: Run E2E Tests (Playwright)
+        run: ADAPTER=node pnpm run test:e2e --project=chromium
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

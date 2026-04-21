@@ -14,11 +14,17 @@
     "build:netlify": "cross-env ADAPTER=netlify astro build",
     "build:cloudflare": "cross-env ADAPTER=cloudflare astro build",
     "preview": "astro preview",
-    "deploy": "npm run build:cloudflare && wrangler deploy",
+    "deploy": "pnpm build:cloudflare && wrangler deploy",
     "preview:worker": "wrangler dev",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "astro": "astro"
   },
   "dependencies": {
+    "@astro-community/astro-embed-link-preview": "^0.3.1",
+    "@astro-community/astro-embed-youtube": "^0.5.10",
     "@astrojs/cloudflare": "^13.1.7",
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/netlify": "^7.0.6",
@@ -27,32 +33,40 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^10.0.4",
-    "astro": "^6.1.3",
+    "astro": "^6.1.5",
     "astro-embed": "^0.12.0",
     "astro-mermaid": "^2.0.1",
     "clsx": "^2.1.1",
     "fuse.js": "^7.2.0",
-    "lucide-react": "^0.562.0",
+    "lucide-react": "1.8.0",
     "mermaid": "^11.14.0",
     "motion": "^12.38.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "sharp": "^0.34.5",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@astrojs/language-server": "^2.16.6",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
-    "@types/react": "^19.2.7",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.2.0",
     "astro-compress": "^2.4.0",
     "cross-env": "^10.1.0",
     "gray-matter": "^4.0.3",
+    "jsdom": "^29.0.2",
     "tailwindcss": "^4.2.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^6.0.2",
-    "wrangler": "^4.80.0"
+    "vitest": "^4.1.4",
+    "vitest-fetch-mock": "^0.4.5",
+    "wrangler": "^4.81.1"
   },
   "overrides": {
     "path-to-regexp": "^8.4.2",
@@ -61,5 +75,6 @@
     "chevrotain": "^12.0.0",
     "@chevrotain/cst-dts-gen": "^12.0.0",
     "@chevrotain/gast": "^12.0.0"
-  }
+  },
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

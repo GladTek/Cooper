@@ -1,5 +1,5 @@
 ---
-import { Github, Twitter, Linkedin } from 'lucide-react';
+import BrandIcon from '~/components/common/BrandIcon.astro';
 import { Image } from 'astro:assets';
 import { useTranslations } from '~/i18n/utils';
 import { defaultLang } from '~/i18n/ui';
@@ -45,7 +45,7 @@ const { name, role, image, twitter, github, linkedin } = Astro.props;
         class="text-muted-foreground hover:text-foreground transition-colors" 
         aria-label={`${name} ${t['social.preposition']} ${t['social.twitter']}`}
       >
-        <Twitter className="w-4 h-4" />
+        <BrandIcon icon="twitter" className="w-4 h-4" />
       </a>
     )}
     {github && (
@@ -54,7 +54,7 @@ const { name, role, image, twitter, github, linkedin } = Astro.props;
         class="text-muted-foreground hover:text-foreground transition-colors" 
         aria-label={`${name} ${t['social.preposition']} ${t['social.github']}`}
       >
-        <Github className="w-4 h-4" />
+        <BrandIcon icon="github" className="w-4 h-4" />
       </a>
     )}
     {linkedin && (
@@ -63,7 +63,7 @@ const { name, role, image, twitter, github, linkedin } = Astro.props;
         class="text-muted-foreground hover:text-foreground transition-colors" 
         aria-label={`${name} ${t['social.preposition']} ${t['social.linkedin']}`}
       >
-        <Linkedin className="w-4 h-4" />
+        <BrandIcon icon="linkedin" className="w-4 h-4" />
       </a>
     )}
   </div>

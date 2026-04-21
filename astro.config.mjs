@@ -62,7 +62,10 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    define: { 'import.meta.env.DEFAULT_LOCALE': JSON.stringify(DEFAULT_LOCALE) }
+    define: { 'import.meta.env.DEFAULT_LOCALE': JSON.stringify(DEFAULT_LOCALE) },
+    ssr: {
+      noExternal: ['lucide-react', 'motion', 'motion/react']
+    }
   },
   fonts: [
     { provider: fontProviders.fontsource(), name: "Inter", cssVariable: "--font-inter" },

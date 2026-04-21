@@ -1,16 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { GripVertical } from 'lucide-react';
 
-export default function BeforeAfter({ beforeImage, afterImage, beforeLabel, afterLabel }) {
+interface BeforeAfterProps {
+  beforeImage: string;
+  afterImage: string;
+  beforeLabel: string;
+  afterLabel: string;
+}
+
+export default function BeforeAfter({ beforeImage, afterImage, beforeLabel, afterLabel }: BeforeAfterProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMove = (event) => {
+  const handleMove = (event: React.MouseEvent | React.TouchEvent | any) => {
     if (!containerRef.current) return;
     
     // Support both mouse and touch events
-    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientX = 'touches' in event ? event.touches[0].clientX : (event as React.MouseEvent).clientX;
     const rect = containerRef.current.getBoundingClientRect();
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
     const percent = (x / rect.width) * 100;
@@ -18,16 +25,23 @@ export default function BeforeAfter({ beforeImage, afterImage, beforeLabel, afte
     setSliderPosition(percent);
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
   };
-  const handleMouseUp = () => setIsDragging(false);
 
   useEffect(() => {
-    const handleWindowMove = (e) => {
-      if (isDragging) handleMove(e);
+    const handleWindowMove = (e: MouseEvent | TouchEvent) => {
+      if (isDragging) {
+        const clientX = 'touches' in e ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
+        if (containerRef.current) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+          const percent = (x / rect.width) * 100;
+          setSliderPosition(percent);
+        }
+      }
     };
     const handleWindowUp = () => setIsDragging(false);
 
@@ -48,8 +62,14 @@ export default function BeforeAfter({ beforeImage, afterImage, beforeLabel, afte
     <div 
       className="relative w-full aspect-video rounded-3xl overflow-hidden select-none cursor-ew-resize shadow-2xl border border-white/10 touch-none"
       ref={containerRef}
-      onMouseDown={handleMove}
-      onTouchStart={handleMove}
+      onMouseDown={(e) => {
+        handleMove(e);
+        handleMouseDown(e);
+      }}
+      onTouchStart={(e) => {
+        handleMove(e);
+        handleMouseDown(e);
+      }}
     >
       {/* After Image (Background) */}
       <img

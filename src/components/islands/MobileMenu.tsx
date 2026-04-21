@@ -1,8 +1,31 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Github } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import BrandIcon from '~/components/common/BrandIcon';
 import * as Icons from 'lucide-react';
 import { ACTION_LINKS } from '~/site.config';
+
+interface NavChild {
+  label: string;
+  href: string;
+  icon?: string;
+  description?: string;
+}
+
+interface NavLink {
+  label: string;
+  href?: string;
+  children?: NavChild[];
+}
+
+interface MobileMenuProps {
+  links: NavLink[];
+  currentPath?: string;
+  labels?: {
+    menu: string;
+    getStarted: string;
+  };
+}
 
 export default function MobileMenu({ 
   links, 
@@ -11,7 +34,7 @@ export default function MobileMenu({
     menu: 'Menu',
     getStarted: 'Get Started'
   }
-}) {
+}: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   // Prevent scrolling when menu is open
@@ -74,7 +97,7 @@ export default function MobileMenu({
               <nav className="flex-1 min-h-0 overflow-y-auto" aria-label="Mobile Menu Links">
                 <ul className="flex flex-col gap-4 md:gap-2 m-0 p-0 list-none">
                   {links.map((link) => {
-                    const isActive = (href) => {
+                    const isActive = (href: string) => {
                          if (href === '/') return currentPath === '/';
                          return currentPath.startsWith(href);
                     };
@@ -91,7 +114,7 @@ export default function MobileMenu({
                                </div>
                                <ul className="pl-4 flex flex-col gap-3 md:gap-2 border-l-2 border-foreground/10 ml-2 m-0 list-none">
                                   {link.children.map(child => {
-                                      const Icon = child.icon ? Icons[child.icon] : null;
+                                      const Icon = child.icon ? (Icons as any)[child.icon] : null;
                                       return (
                                       <li key={child.href}>
                                         <a 
@@ -115,7 +138,7 @@ export default function MobileMenu({
                               href={link.href}
                               onClick={() => setIsOpen(false)}
                               className={`flex items-center justify-between py-2 text-xl md:text-lg font-bold transition-colors ${
-                                  isActive(link.href) 
+                                  isActive(link.href || '') 
                                   ? 'text-primary dark:text-blue-300' 
                                   : 'text-foreground hover:text-primary dark:text-white dark:hover:text-blue-300'
                               }`}
@@ -146,7 +169,7 @@ export default function MobileMenu({
                   
                   <div className="flex justify-center gap-6 mt-4">
                      <a href={ACTION_LINKS.social.github} target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-primary transition-colors" aria-label="GitHub">
-                        <Github className="w-6 h-6" aria-hidden="true" />
+                        <BrandIcon icon="github" className="w-6 h-6" aria-hidden="true" />
                      </a>
                   </div>
               </div>

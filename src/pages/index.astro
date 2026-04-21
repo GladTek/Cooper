@@ -1,7 +1,4 @@
 ---
 export const prerender = false;
-
-import { defaultLang } from '../i18n/ui';
-
-return Astro.redirect(`/${defaultLang}/`);
+return Astro.redirect(`/${import.meta.env.DEFAULT_LOCALE || 'en'}/`);
 ---

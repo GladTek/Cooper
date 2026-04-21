@@ -1,9 +1,26 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, ChevronDown, ListTree } from 'lucide-react';
+import { X, ListTree } from 'lucide-react';
 
-export default function MobileDocsMenu({ sections, groupedDocs, currentPath }) {
+interface Doc {
+  id: string;
+  data: {
+    title: string;
+    [key: string]: any;
+  };
+}
+
+interface MobileDocsMenuProps {
+  sections: string[];
+  groupedDocs: Record<string, Doc[]>;
+  currentPath: string;
+}
+
+export default function MobileDocsMenu({ sections, groupedDocs, currentPath }: MobileDocsMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Helper to get clean slug from ID (same as in DocsLayout)
+  const getSlug = (id: string) => id.replace(/\.[^/.]+$/, "");
 
   // Prevent scrolling when menu is open
   useEffect(() => {
@@ -72,10 +89,10 @@ export default function MobileDocsMenu({ sections, groupedDocs, currentPath }) {
                       return (
                         <ul key="root" className="space-y-1 list-none p-0">
                           {sectionDocs.map(doc => {
-                            const docPath = `/docs/${doc.slug}`;
+                            const docPath = `/docs/${getSlug(doc.id)}`;
                             const isExact = normalizedCurrentPath === docPath;
                             return (
-                              <li key={doc.slug}>
+                              <li key={doc.id}>
                                 <a
                                   href={docPath}
                                   onClick={() => setIsOpen(false)}
@@ -96,7 +113,6 @@ export default function MobileDocsMenu({ sections, groupedDocs, currentPath }) {
                     }
 
                     const rawTitle = section.charAt(0).toUpperCase() + section.slice(1).replace(/-/g, ' ');
-                    const isSectionActive = sectionDocs.some(doc => normalizedCurrentPath === `/docs/${doc.slug}`);
                     
                     return (
                       <div key={section} className="space-y-1">
@@ -105,10 +121,10 @@ export default function MobileDocsMenu({ sections, groupedDocs, currentPath }) {
                         </div>
                         <ul className="pl-4 border-l border-foreground/10 space-y-1 list-none m-0">
                           {sectionDocs.map(doc => {
-                            const docPath = `/docs/${doc.slug}`;
+                            const docPath = `/docs/${getSlug(doc.id)}`;
                             const isExact = normalizedCurrentPath === docPath;
                             return (
-                              <li key={doc.slug} className="relative">
+                              <li key={doc.id} className="relative">
                                 {/* Visual branch connector */}
                                 <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-3 h-px bg-foreground/10" />
                                 

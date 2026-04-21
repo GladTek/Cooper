@@ -4,8 +4,6 @@ import { getCollection } from 'astro:content';
 import { clsx } from 'clsx';
 import TableOfContents from '~/components/blog/TableOfContents.astro';
 import type { MarkdownHeading } from 'astro';
-import { defaultLang } from '~/i18n/ui';
-import { useTranslations } from '~/i18n/utils';
 import ScrollProgress from '~/components/layout/ScrollProgress.astro';
 import MobileDocsMenu from '~/components/islands/MobileDocsMenu';
 
@@ -139,7 +137,7 @@ const SECTION_CUSTOMIZATION: Record<string, { icon: string, color: string, label
                                     <div class="absolute left-0 top-0 bottom-4 w-px bg-foreground/10"></div>
                                     
                                     <ul class="list-none p-0 m-0 space-y-1">
-                                        {sectionDocs.map((doc, idx) => {
+                                        {sectionDocs.map((doc) => {
                                             const docPath = `/docs/${getSlug(doc.id)}`;
                                             const isExact = normalizedCurrentPath === docPath;
                                             return (

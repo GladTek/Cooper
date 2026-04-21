@@ -9,16 +9,12 @@ import Grid from '~/components/ui/Grid.astro';
 import Heading from '~/components/ui/Heading.astro';
 import Text from '~/components/ui/Text.astro';
 import Badge from '~/components/ui/Badge.astro';
-import Card from '~/components/ui/Card.astro';
-import { ArrowRight, ChevronRight, Check } from 'lucide-react';
-import { useTranslations } from '~/i18n/utils';
+import { ArrowRight, Check } from 'lucide-react';
 
 export async function getStaticPaths() {
   return Object.keys(ui).map((lang) => ({ params: { lang } }));
 }
 
-const { lang } = Astro.params;
-const t = useTranslations(lang);
 
 const colors = [
     { name: 'Primary', class: 'bg-primary', text: 'text-white' },

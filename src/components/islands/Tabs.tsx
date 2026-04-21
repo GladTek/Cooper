@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
-import { clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs) {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// items: { id: string, label: string, content: React.ReactNode }[]
-export default function Tabs({ items, defaultValue, className }) {
+interface TabItem {
+  id: string;
+  label: string;
+  content: ReactNode;
+}
+
+interface TabsProps {
+  items: TabItem[];
+  defaultValue?: string;
+  className?: string;
+}
+
+export default function Tabs({ items, defaultValue, className }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue || items[0]?.id);
 
   return (

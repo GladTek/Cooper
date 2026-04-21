@@ -1,21 +1,41 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search as SearchIcon, X, Book, Zap, LayoutGrid, FileText } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import Fuse from 'fuse.js';
+import type { FuseResult } from 'fuse.js';
 
-const POPULAR_LINKS = [
+interface SearchItem {
+  url: string;
+  title: string;
+  description?: string;
+  body?: string;
+}
+
+interface PopularLink {
+  label: string;
+  href: string;
+  icon: any;
+  localize?: boolean;
+}
+
+const POPULAR_LINKS: PopularLink[] = [
   { label: "Getting Started", href: "/docs/getting-started/", icon: Book, localize: false },
   { label: "Features", href: "/features/", icon: Zap },
   { label: "Design System", href: "/design/", icon: LayoutGrid },
   { label: "Blog", href: "/blog/", icon: FileText },
 ];
 
-export default function Search({ placeholder = "Search...", lang = "en" }) {
+interface SearchProps {
+  placeholder?: string;
+  lang?: string;
+}
+
+export default function Search({ placeholder = "Search...", lang = "en" }: SearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [fuse, setFuse] = useState(null);
-  const inputRef = useRef(null);
+  const [results, setResults] = useState<FuseResult<SearchItem>[]>([]);
+  const [fuse, setFuse] = useState<Fuse<SearchItem> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const localizedLinks = POPULAR_LINKS.map(link => {
     if (link.localize === false || link.href.startsWith('http')) return link;
@@ -27,7 +47,7 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
       fetch('/api/search.json')
         .then(res => res.json())
         .then(data => {
-          const fuseInstance = new Fuse(data, {
+          const fuseInstance = new Fuse<SearchItem>(data, {
             keys: ['title', 'description', 'body'],
             includeMatches: true,
             minMatchCharLength: 2,
@@ -50,12 +70,12 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
   }, [query, fuse]);
 
   useEffect(() => {
-    if (open && inputRef.current) setTimeout(() => inputRef.current.focus(), 100);
+    if (open && inputRef.current) setTimeout(() => inputRef.current?.focus(), 100);
     if (!open) setQuery("");
   }, [open]);
 
   useEffect(() => {
-    const down = (e) => {
+    const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((o) => !o);
@@ -109,7 +129,7 @@ export default function Search({ placeholder = "Search...", lang = "en" }) {
                   placeholder={placeholder}
                   aria-label={placeholder}
                   title={placeholder}
-                  className="w-full bg-transparent py-4 pl-12 pr-12 text-foreground outline-hidden placeholder:text-foreground/50 text-lg"
+                  className="w-full bg-transparent py-4 pl-12 pr-12 text-foreground outline-none placeholder:text-foreground/50 text-lg"
                 />
                 <button 
                   onClick={() => setOpen(false)}
