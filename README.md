@@ -1,6 +1,6 @@
 # Cooper - The Ultimate Astro Boilerplate
 
-The advanced, batteries-included template for building blazing-fast modern web applications with **Astro 6**, **Tailwind CSS 4**, and **React 19**.
+The advanced, batteries-included template for building blazing-fast modern web applications with **Astro 6.1**, **Tailwind CSS 4.2**, and **React 19**.
 
 <p align="center">
   <img src="https://img.shields.io/github/v/release/gladtek/cooper?color=%231A81FA&label=Latest&logo=%20" alt="Latest Release" />
@@ -51,10 +51,10 @@ The boilerplate includes a pre-configured, production-ready testing infrastructu
 ## Features
 
 ### Core Stack
-- **Astro 6**: The latest version of the web framework for content-driven websites.
-- **Tailwind CSS 4**: Engine-integrated utility-first CSS using modern CSS variables.
+- **Astro 6.1**: The latest version of the web framework for content-driven websites.
+- **Tailwind CSS 4.2**: Engine-integrated utility-first CSS using modern CSS variables.
 - **React 19**: Powered by React 19 for modern concurrent rendering and optimized hydration.
-- **TypeScript**: 100% type-safe codebase (Typescript 6.0+).
+- **TypeScript 6.0**: 100% type-safe codebase.
 
 ### Accessibility & Performance
 - **WCAG AA/AAA Compliant**: Accessible color contrast and focus state management.
@@ -72,7 +72,7 @@ npx @gladtek/launch-cooper@latest
 ```
 
 ### Manual Setup
-1. **Install dependencies**
+1. **Install dependencies** (Requires **pnpm 10+**)
    ```bash
    pnpm install
    ```

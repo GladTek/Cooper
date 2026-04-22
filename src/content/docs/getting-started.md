@@ -18,7 +18,7 @@ cd Cooper
 Next, install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Running Locally
@@ -26,7 +26,7 @@ npm install
 Start the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Open your browser and navigate to `http://localhost:4321` to see the site in action.
@@ -37,14 +37,17 @@ Here's a quick look at how the project is organized:
 
 ```text
 src/
+├── assets/            # Static assets (images, fonts)
 ├── components/        # Reusable components
 │   ├── blog/          # Blog & Portfolio cards/items
 │   ├── common/        # Shared global tools
+│   ├── docs/          # Documentation-specific components
 │   ├── islands/       # Interactive React components
 │   ├── layout/        # Structural atoms (Section, Grid)
 │   ├── sections/      # Marketing blocks (Hero, Features)
 │   └── ui/            # Basic UI parts (Button, Badge)
-├── content/           # Content Collections (Blog, Docs)
+├── content/           # Content Collections (Blog, Docs, Changelog)
+├── i18n/              # Localization files and logic
 ├── layouts/           # Page wrappers
 ├── pages/             # File-based routing
 ├── styles/            # CSS & Tailwind setup
@@ -63,6 +66,11 @@ export const siteConfig = {
   name: 'Cooper',
   description: 'Premium Astro Boilerplate',
   primaryColor: '#00008B', // Update this to your brand color
+  logo: {
+    src: '/logo.svg',
+    strategy: 'invert',
+  },
+  ogImage: '/og-image.webp',
 };
 ```
 
@@ -75,7 +83,7 @@ To update the header links, modify `src/components/Header.astro`.
 This Boilerplate is ready to deploy to Vercel, Netlify, or any static hosting provider. Just run:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 This will generate a `dist` folder with your static site.
