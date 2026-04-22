@@ -1,0 +1,43 @@
+---
+title: "Universal Search"
+description: "Customization and architecture of the Fuse.js Command Palette."
+---
+
+The Universal Search in Cooper is powered by a high-performance **Fuse.js** engine, providing fuzzy matching and instant results via a premium Command Palette interface.
+
+## Architecture
+
+Our search system is designed for speed and zero-cost scaling:
+1.  **Search Index**: A lightweight JSON file (`/api/search.json`) is generated at build time containing the searchable content of all pages, blog posts, and docs.
+2.  **Fuse.js Engine**: The client-side search uses [Fuse.js](https://fusejs.io/) to provide powerful fuzzy matching, allowing for typos and partial matches.
+3.  **Command Palette**: A React-based modal (`Cmd+K`) provides an interactive interface with keyboard navigation support.
+
+## Customization
+
+### Search Logic
+You can fine-tune the search sensitivity and indexed fields in `src/components/islands/Search.tsx`:
+
+```typescript
+const fuseInstance = new Fuse<SearchItem>(data, {
+  keys: ['title', 'description', 'body'], // Fields to search
+  threshold: 0.3, // 0.0 for perfect match, 1.0 for matches everything
+  minMatchCharLength: 2,
+});
+```
+
+### UI & Aesthetics
+The search modal is styled using **Tailwind CSS 4** and **Motion** for smooth animations. It automatically inherits your brand colors and dark mode settings from the global theme.
+
+- **Background**: `bg-background` with a `backdrop-blur` overlay.
+- **Borders**: `border-foreground/10` for a subtle, modern feel.
+- **Animations**: Powered by `motion/react` with spring physics for a premium tactile response.
+
+## Key Bindings
+
+- <kbd>⌘</kbd> + <kbd>K</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>K</kbd> (Windows): Open Search.
+- <kbd>Esc</kbd>: Close Search.
+- <kbd>↑</kbd> / <kbd>↓</kbd>: Navigate results (Planned).
+
+## Internationalization (i18n)
+
+The search interface is fully localized and supports **RTL (Right-to-Left)** layouts. It automatically uses the current language context to translate placeholders and labels.
