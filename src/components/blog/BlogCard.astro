@@ -5,6 +5,8 @@ import { isRtl, useTranslations } from '~/i18n/utils';
 import Card from '~/components/ui/Card.astro';
 import Badge from '~/components/ui/Badge.astro';
 
+import { getEntry } from 'astro:content';
+
 interface Props {
   title: string;
   description: string;
@@ -12,11 +14,22 @@ interface Props {
   slug: string;
   heroImage?: ImageMetadata;
   isVideo?: boolean;
+  audioUrl?: string;
+  author?: string;
 }
 
-const { title, description, pubDate, slug, heroImage, isVideo = false } = Astro.props;
+const { title, description, pubDate, slug, heroImage, isVideo = false, audioUrl, author: authorSlug } = Astro.props;
 const { lang = defaultLang } = Astro.params;
 const t = useTranslations(lang);
+
+// Fetch author if provided
+let authorName = '';
+if (authorSlug) {
+  const authorEntry = await getEntry('authors', `${lang}/${authorSlug}`) || await getEntry('authors', `${defaultLang}/${authorSlug}`);
+  if (authorEntry) {
+    authorName = authorEntry.data.name;
+  }
+}
 
 const dateString = pubDate.toLocaleDateString(lang, {
   year: 'numeric',
@@ -42,10 +55,20 @@ const dateString = pubDate.toLocaleDateString(lang, {
     )}
 
     {isVideo && (
-      <div class="absolute top-2 right-2 z-10">
-        <Badge variant="destructive" class="shadow-sm">
-          Video
-        </Badge>
+      <div class="absolute top-3 right-3 z-10">
+        <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 flex items-center gap-2 shadow-lg">
+          <div class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]"></div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-white drop-shadow-sm">Video</span>
+        </div>
+      </div>
+    )}
+
+    {audioUrl && (
+      <div class={`absolute top-3 ${isVideo ? 'right-24' : 'right-3'} z-10`}>
+        <div class="bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 flex items-center gap-2 shadow-lg">
+          <div class="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-white drop-shadow-sm">Audio</span>
+        </div>
       </div>
     )}
     
@@ -55,6 +78,12 @@ const dateString = pubDate.toLocaleDateString(lang, {
   <div class="p-6">
     <div class="flex items-center gap-2 text-xs text-muted-foreground mb-3">
       <time datetime={pubDate.toISOString()}>{dateString}</time>
+      {authorName && (
+        <>
+          <span>•</span>
+          <span class="font-medium text-primary/80">{authorName}</span>
+        </>
+      )}
       <span>•</span>
       <span>{t['nav.blog']}</span>
     </div>

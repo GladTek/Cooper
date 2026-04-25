@@ -50,6 +50,8 @@ const posts = (await getCollection('blog'))
                     slug={`/${lang}/blog/${post.id.split('/').slice(1).join('/').replace(/\.[^/.]+$/, "")}`}
                     heroImage={post.data.heroImage}
                     isVideo={post.data.isVideo}
+                    author={post.data.author}
+                    audioUrl={post.data.audioUrl}
                 />
             ))}
          </div>
