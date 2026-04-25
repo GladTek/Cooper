@@ -54,6 +54,8 @@ export default defineConfig({
   output: 'static',
   image: {
     domains: ['vitejs.dev', 'upload.wikimedia.org', 'astro.build', 'pagepro.co'],
+    service: { entrypoint: 'astro/assets/services/sharp' },
+    quality: 80,
   },
   adapter: getAdapter(),
   markdown: {

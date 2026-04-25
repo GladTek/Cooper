@@ -12,6 +12,9 @@ interface Props {
 	title?: string;
 	description?: string;
     image?: string;
+    imageWidth?: number;
+    imageHeight?: number;
+    imageAlt?: string;
     article?: boolean;
     noindex?: boolean;
     nofollow?: boolean;
@@ -34,6 +37,9 @@ const {
     title = brandName, 
     description = siteConfig.description, 
     image, 
+    imageWidth,
+    imageHeight,
+    imageAlt,
     article = false,
     noindex = false,
     nofollow = false,
@@ -52,6 +58,9 @@ const dir = isRtl(lang) ? 'rtl' : 'ltr';
             title={title} 
             description={description} 
             image={image} 
+            imageWidth={imageWidth}
+            imageHeight={imageHeight}
+            imageAlt={imageAlt}
             article={article} 
             noindex={noindex}
             nofollow={nofollow}

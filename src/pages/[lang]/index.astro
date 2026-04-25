@@ -3,13 +3,13 @@ export const prerender = true;
 import { languages, defaultLang } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
 import { Image } from 'astro:assets';
-import bentoCode from '~/assets/bento-code.jpg';
-import logoVite from '~/assets/logos/Vite.js.png';
-import logoCloudflare from '~/assets/logos/Cloudflare.png';
-import logoAstro from '~/assets/logos/Astro.png';
-import logoReact from '~/assets/logos/React.png';
-import logoTailwind from '~/assets/logos/Tailwind.png';
-import logoFramer from '~/assets/logos/Motion.png';
+import bentoCode from '~/assets/bento-code.webp';
+import logoVite from '~/assets/logos/Vite.js.webp';
+import logoCloudflare from '~/assets/logos/Cloudflare.webp';
+import logoAstro from '~/assets/logos/Astro.webp';
+import logoReact from '~/assets/logos/React.webp';
+import logoTailwind from '~/assets/logos/Tailwind.webp';
+import logoFramer from '~/assets/logos/Motion.webp';
 import Layout from '~/layouts/Layout.astro';
 import Schema from '~/components/layout/Schema.astro';
 import Hero from '~/components/sections/Hero.astro';
@@ -153,7 +153,14 @@ const homeFaqs = [
         <!-- Tall Item -->
         <BentoItem class="md:row-span-2 group">
                 <div class="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/50 to-transparent z-10"></div>
-                <Image src={bentoCode} alt="Code" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" />
+                <Image 
+                    src={bentoCode} 
+                    alt="Code" 
+                    width={800}
+                    height={1000}
+                    quality={70}
+                    class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" 
+                />
                 
                 <div class="relative z-20 h-full flex flex-col justify-end">
                 <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center mb-4">
