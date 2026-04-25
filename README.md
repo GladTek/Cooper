@@ -123,7 +123,7 @@ Cooper is engineered for speed and accessibility. We enforce these standards via
 | 🛡️ **Best Practices** | **90** | `Error` |
 | 🔍 **SEO** | **95** | `Error` |
 
-*Automated audits are performed on every PR to ensure zero performance regression.*
+*Automated audits are performed on the **Homepage** and **Key Blog Content** for every PR to ensure zero performance regression.*
 
 ---
 
