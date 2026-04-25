@@ -1,0 +1,84 @@
+---
+export const prerender = true;
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/layout/PageHeader.astro';
+import BlogCard from '~/components/blog/BlogCard.astro';
+import Container from '~/components/ui/Container.astro';
+import Grid from '~/components/ui/Grid.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { languages, defaultLang } from '~/i18n/ui';
+import { isRtl, useTranslations } from '~/i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  const allAuthors = await getCollection('authors');
+  
+  // Get unique author slugs (e.g., 'joseph-cooper', 'tars')
+  const uniqueAuthorSlugs = [...new Set(allAuthors.map(a => a.id.split('/').slice(1).join('/')))];
+
+  return Object.keys(languages).flatMap((lang) => {
+    return uniqueAuthorSlugs.map((authorSlug) => {
+      // Filter posts by this author and language
+      const filteredPosts = allPosts
+        .filter((post) => post.id.startsWith(`${lang}/`) && post.data.author === authorSlug)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+      return {
+        params: { lang, author: authorSlug },
+        props: { posts: filteredPosts, authorSlug },
+      };
+    });
+  });
+}
+
+const { posts, authorSlug } = Astro.props;
+const { lang } = Astro.params;
+const t = useTranslations(lang);
+
+// Get author details with fallback
+let authorEntry = await getEntry('authors', `${lang}/${authorSlug}`);
+if (!authorEntry && lang !== defaultLang) {
+    authorEntry = await getEntry('authors', `${defaultLang}/${authorSlug}`);
+}
+
+const authorName = authorEntry ? authorEntry.data.name : authorSlug;
+const authorDesc = authorEntry ? authorEntry.data.description : "";
+---
+
+<Layout title={`${authorName} - Blog`} description={`Articles written by ${authorName}`}>
+  <Container class="pt-32">
+    <a href={`/${lang}/blog`} class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={`w-4 h-4 ${isRtl(lang) ? 'rotate-180' : ''}`}><path d="m15 18-6-6 6-6"/></svg>
+        {t['blog.back']}
+    </a>
+  </Container>
+
+  <PageHeader 
+      title={authorName}
+      description={authorDesc || t['blog.hero.subtitle']}
+  />
+
+  <Container as="section" class="pb-24">
+      {posts.length > 0 ? (
+          <Grid cols={3} class="mb-16">
+            {posts.map((post: CollectionEntry<'blog'>) => (
+              <BlogCard 
+                 title={post.data.title}
+                 description={post.data.description}
+                 pubDate={post.data.pubDate}
+                 heroImage={post.data.heroImage}
+                 slug={`/${lang}/blog/${post.id.split('/').slice(1).join('/').replace(/\.[^/.]+$/, "")}`}
+                 isVideo={post.data.isVideo}
+                 author={post.data.author}
+                 audioUrl={post.data.audioUrl}
+              />
+            ))}
+          </Grid>
+      ) : (
+          <div class="text-center py-20">
+              <p class="text-xl text-muted-foreground">{t['blog.noPosts'] || "No posts found for this author."}</p>
+          </div>
+      )}
+  </Container>
+</Layout>
