@@ -1,18 +1,24 @@
 ---
 import Layout from './Layout.astro';
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import AudioPlayer from '~/components/common/AudioPlayer.astro';
+import { getEntry, type CollectionEntry } from 'astro:content';
 import { defaultLang } from '~/i18n/ui';
 import { isRtl, useTranslations } from '~/i18n/utils';
+import AuthorDetails from '~/components/blog/AuthorDetails.astro';
+import ScrollProgress from '~/components/layout/ScrollProgress.astro';
+import Badge from '~/components/ui/Badge.astro';
 
 interface Props {
   title: string;
   description: string;
   pubDate: Date;
   updatedDate?: Date;
-  heroImage?: ImageMetadata;
+  author?: any;
+  tags?: string[];
   youtubeId?: string;
-  audioUrl?: string; // Add audioUrl prop
+  audioUrl?: string;
   isVideo?: boolean;
   children?: any;
   noindex?: boolean;
@@ -20,9 +26,21 @@ interface Props {
   availableLangs?: string[];
 }
 
-const { title, description, pubDate, updatedDate, heroImage, youtubeId, audioUrl, isVideo, noindex, nofollow, availableLangs } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroImageAlt, youtubeId, audioUrl, isVideo, noindex, nofollow, availableLangs, author, tags } = Astro.props;
 const { lang = defaultLang } = Astro.params;
 const t = useTranslations(lang);
+
+// Resolve author with i18n fallback
+let authorEntry = null;
+if (author) {
+    // Try to find author in current language
+    authorEntry = await getEntry('authors', `${lang}/${author}`);
+    
+    // Fallback to default language if not found
+    if (!authorEntry && lang !== defaultLang) {
+        authorEntry = await getEntry('authors', `${defaultLang}/${author}`);
+    }
+}
 
 const schema = {
   "@context": "https://schema.org",
@@ -34,11 +52,10 @@ const schema = {
   ...(heroImage && { "image": new URL(heroImage.src, Astro.site).toString() }),
   "author": {
       "@type": "Person",
-      "name": "Cooper Team",
-      "url": "https://cooper.example.com" // Replace with dynamic author if available
+      "name": authorEntry ? authorEntry.data.name : "Cooper Team",
+      "url": Astro.site?.toString() || ""
   }
 };
-import ScrollProgress from '~/components/layout/ScrollProgress.astro';
 ---
 
 <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} slot="head"></script>
@@ -56,7 +73,7 @@ import ScrollProgress from '~/components/layout/ScrollProgress.astro';
     <div class="mb-12 text-center">
         {heroImage && !youtubeId && (
             <div class="rounded-2xl overflow-hidden mb-8 border border-black/10 dark:border-white/10 shadow-2xl">
-                <Image src={heroImage} alt="" class="w-full object-cover aspect-video" />
+                <Image src={heroImage} alt={heroImageAlt || title} class="w-full object-cover aspect-video" />
             </div>
         )}
 
@@ -94,13 +111,31 @@ import ScrollProgress from '~/components/layout/ScrollProgress.astro';
             )}
         </div>
 
-        <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 bg-linear-to-br from-white to-white/60 bg-clip-text text-transparent">{title}</h1>
-        <p class="text-xl text-muted-foreground max-w-2xl mx-auto">{description}</p>
-        <hr class="border-black/10 dark:border-white/10 mt-8" />
+        <h1 class="text-4xl md:text-6xl font-display font-bold mb-6 bg-linear-to-br from-zinc-900 via-zinc-900 to-zinc-600 dark:from-white dark:via-white dark:to-white bg-clip-text text-transparent">{title}</h1>
+        <p class="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">{description}</p>
+        
+        {tags && tags.length > 0 && (
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                {tags.map((tag) => {
+                    const tagSlug = tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                    return (
+                        <a href={`/${lang}/blog/tag/${tagSlug}`}>
+                            <Badge variant="outline" class="hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer">
+                                {tag}
+                            </Badge>
+                        </a>
+                    );
+                })}
+            </div>
+        )}
+
+        <hr class="border-black/10 dark:border-white/10" />
     </div>
 
     <div class="prose prose-lg mx-auto prose-img:rounded-xl prose-headings:font-display prose-headings:font-bold prose-a:text-primary hover:prose-a:text-primary/80 dark:prose-invert">
       <slot />
     </div>
+
+    {authorEntry && <AuthorDetails author={authorEntry} />}
   </article>
 </Layout>

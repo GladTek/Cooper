@@ -3,6 +3,7 @@ title: 'تارس: الرفيق المثالي'
 description: 'لماذا سرقت الروبوتات الشبيهة بالمنليث الأضواء.'
 pubDate: '2025-04-10'
 heroImage: '~/assets/blog/interstellar-tars.png'
+author: 'tars'
 tags: ["interstellar", "robots", "ai"]
 youtubeId: "p3PfKf0ndik"  # The ID from the YouTube URL
 isVideo: true 

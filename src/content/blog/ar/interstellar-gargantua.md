@@ -3,6 +3,7 @@ title: 'علم غارغانتوا'
 description: 'استكشاف الفيزياء وراء الثقب الأسود الهائل في Interstellar.'
 pubDate: '2025-11-10'
 heroImage: '~/assets/blog/interstellar-gargantua.png'
+author: 'joseph-cooper'
 tags: ["interstellar", "science", "black-hole"]
 ---
 

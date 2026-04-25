@@ -3,6 +3,8 @@ title: 'Why We Built Gladtek'
 description: 'The philosophy behind the ultimate Astro Boilerplate for modern developers.'
 pubDate: '2025-01-15'
 heroImage: '~/assets/blog/startup.jpg'
+heroImageAlt: "A vision of the future with Gladtek technology"
+author: 'joseph-cooper'
 tags: ["philosophy", "gladtek"]
 ---
 
