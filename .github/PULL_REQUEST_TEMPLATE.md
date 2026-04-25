@@ -16,9 +16,11 @@ Fixes # (issue)
 
 Please describe the tests that you ran to verify your changes.
 
-- [ ] `npm run build` locally
-- [ ] `npm run dev` visual verification
-- [ ] Test on multiple browsers/resolutions
+- [ ] `pnpm run test:unit` passed
+- [ ] `pnpm run test:e2e` passed (if applicable)
+- [ ] `pnpm run build` locally
+- [ ] `pnpm run dev` visual verification
+
 
 ## Checklist:
 
