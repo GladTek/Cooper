@@ -112,6 +112,21 @@ pnpm run test:unit:watch # Watch mode
 
 ---
 
+## Performance Benchmarks 🚀
+
+Cooper is engineered for speed and accessibility. We enforce these standards via **Lighthouse CI** as a mandatory quality gate for every build:
+
+| Category | Minimum Score | Severity |
+| :--- | :---: | :--- |
+| ⚡ **Performance** | **90** | `Warn` |
+| ♿ **Accessibility** | **95** | `Error` |
+| 🛡️ **Best Practices** | **90** | `Error` |
+| 🔍 **SEO** | **95** | `Error` |
+
+*Automated audits are performed on every PR to ensure zero performance regression.*
+
+---
+
 ## Deployment
 
 The project supports multi-adapter deployment out of the box. Use the corresponding build command:
