@@ -22,7 +22,7 @@ export async function getStaticPaths() {
       // Filter posts by this author and language
       const filteredPosts = allPosts
         .filter((post) => post.id.startsWith(`${lang}/`) && post.data.author === authorSlug)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+        .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
       return {
         params: { lang, author: authorSlug },

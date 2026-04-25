@@ -3,7 +3,7 @@ import Layout from './Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import AudioPlayer from '~/components/common/AudioPlayer.astro';
-import { getEntry, type CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import { defaultLang } from '~/i18n/ui';
 import { isRtl, useTranslations } from '~/i18n/utils';
 import AuthorDetails from '~/components/blog/AuthorDetails.astro';
@@ -20,6 +20,8 @@ interface Props {
   youtubeId?: string;
   audioUrl?: string;
   isVideo?: boolean;
+  heroImage?: ImageMetadata;
+  heroImageAlt?: string;
   children?: any;
   noindex?: boolean;
   nofollow?: boolean;
