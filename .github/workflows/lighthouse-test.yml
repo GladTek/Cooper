@@ -3,10 +3,10 @@ name: Lighthouse CI (Branch Specific)
 on:
   push:
     branches:
-      - migration/pnpm
+      - main
   pull_request:
     branches:
-      - migration/pnpm
+      - main
 
 jobs:
   lighthouse-ci:

@@ -2,9 +2,9 @@ name: pnpm Verification
 
 on:
   push:
-    branches: [ migration/pnpm ]
+    branches: [ main ]
   pull_request:
-    branches: [ migration/pnpm ]
+    branches: [ main ]
 
 jobs:
   test:
