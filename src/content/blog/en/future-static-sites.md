@@ -2,7 +2,7 @@
 title: 'The Future of Static Sites'
 description: 'Predictions for 2025 and beyond: Islands, Edge, and Resumability.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/future.jpg'
+heroImage: '~/assets/blog/future.webp'
 tags: ["future", "opinion"]
 ---
 

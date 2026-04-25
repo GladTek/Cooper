@@ -2,7 +2,7 @@
 title: 'فوائد المواقع الثابتة (SSG)'
 description: 'لماذا يعتبر التوليد الثابت للمواقع (Static Site Generation) هو المستقبل للأمان والسرعة.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/server.jpg'
+heroImage: '~/assets/blog/server.webp'
 tags: ["SSG", "أمان", "SEO"]
 ---
 

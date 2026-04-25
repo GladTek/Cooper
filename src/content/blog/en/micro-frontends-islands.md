@@ -2,7 +2,7 @@
 title: 'Micro-frontends with Astro Islands'
 description: 'Building scalable architecture with independent component islands.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/puzzle.jpg'
+heroImage: '~/assets/blog/puzzle.webp'
 tags: ["architecture", "micro-frontends"]
 ---
 

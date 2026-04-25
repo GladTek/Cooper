@@ -2,7 +2,7 @@
 title: 'شرح البعد الخامس'
 description: 'التنقل عبر الزمن كبعد مكاني.'
 pubDate: '2025-09-15'
-heroImage: '~/assets/blog/interstellar-fifth-dimension.png'
+heroImage: '~/assets/blog/interstellar-fifth-dimension.webp'
 tags: ["interstellar", "dimensions", "tesseract"]
 ---
 

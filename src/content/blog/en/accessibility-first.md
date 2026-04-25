@@ -2,7 +2,7 @@
 title: 'Accessibility First: A Core Value'
 description: 'How we ensure Gladtek components are useable by everyone.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/colors.jpg'
+heroImage: '~/assets/blog/colors.webp'
 tags: ["a11y", "design"]
 ---
 

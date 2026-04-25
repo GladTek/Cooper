@@ -2,7 +2,7 @@
 title: 'Bienvenue chez GladTek'
 description: 'Ceci est notre premier article en français.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/globe.jpg'
+heroImage: '~/assets/blog/globe.webp'
 tags: ["bienvenue", "astro"]
 ---
 

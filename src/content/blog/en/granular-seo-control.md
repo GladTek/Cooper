@@ -2,7 +2,7 @@
 title: 'Granular SEO Control with Gladtek'
 description: ' mastering indexation and visibility for your static site.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/graph.jpg'
+heroImage: '~/assets/blog/graph.webp'
 tags: ["seo", "guide"]
 ---
 

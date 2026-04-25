@@ -2,7 +2,7 @@
 title: 'كل ما جديد في Tailwind CSS 4'
 description: 'نظرة شاملة على التحديثات الثورية في الإصدار الرابع من Tailwind CSS.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/colors.jpg'
+heroImage: '~/assets/blog/colors.webp'
 tags: ["Tailwind", "CSS", "تصميم"]
 ---
 

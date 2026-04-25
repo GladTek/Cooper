@@ -2,7 +2,7 @@
 title: 'Serverless Functions on Cloudflare'
 description: 'Running backend logic at the edge for low latency.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/cloud-dark.jpg'
+heroImage: '~/assets/blog/cloud-dark.webp'
 tags: ["serverless", "edge"]
 ---
 

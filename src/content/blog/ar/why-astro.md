@@ -2,7 +2,7 @@
 title: 'لماذا اخترنا أسترو؟'
 description: 'تعرف على سبب اختيارنا لإطار العمل Astro لبناء قوالبنا.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/rocket.jpg'
+heroImage: '~/assets/blog/rocket.webp'
 tags: ["أسترو", "تطوير الويب", "أداء"]
 ---
 

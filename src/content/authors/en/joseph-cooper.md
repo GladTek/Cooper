@@ -1,7 +1,7 @@
 ---
 name: 'Joseph Cooper'
 description: 'Former NASA pilot and chief engineer. Driven by the mission to ensure the survival of humanity among the stars.'
-avatar: '~/assets/authors/joseph-cooper.png'
+avatar: '~/assets/authors/joseph-cooper.webp'
 social:
   twitter: 'https://twitter.com/cooper'
   linkedin: 'https://linkedin.com/in/joseph-cooper'

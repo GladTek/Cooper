@@ -2,7 +2,7 @@
 title: 'Deploying to the Edge'
 description: 'Getting your Gladtek site live on Cloudflare or Vercel.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/globe.jpg'
+heroImage: '~/assets/blog/globe.webp'
 tags: ["devops", "deployment"]
 ---
 

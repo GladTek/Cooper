@@ -2,7 +2,7 @@
 title: 'الثقوب الدودية: طرق مختصرة في الزمكان'
 description: 'فهم كائنات البلق والكرة.'
 pubDate: '2025-12-25'
-heroImage: '~/assets/blog/interstellar-wormhole.png'
+heroImage: '~/assets/blog/interstellar-wormhole.webp'
 tags: ["interstellar", "wormhole", "space"]
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: 'جوزيف كوبر'
 description: 'طيار ناسا السابق وكبير المهندسين. مدفوع بمهمة ضمان بقاء البشرية بين النجوم.'
-avatar: '~/assets/authors/joseph-cooper.png'
+avatar: '~/assets/authors/joseph-cooper.webp'
 social:
   twitter: 'https://twitter.com/cooper'
   linkedin: 'https://linkedin.com/in/joseph-cooper'

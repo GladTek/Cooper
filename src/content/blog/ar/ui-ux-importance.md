@@ -2,7 +2,7 @@
 title: 'لماذا التصميم الجيد أهم مما تعتقد'
 description: 'الواجهة الجميلة ليست مجرد زينة، بل هي جوهر تجربة المستخدم الناجحة.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/art.jpg'
+heroImage: '~/assets/blog/art.webp'
 tags: ["تصميم", "UI/UX", "تجربة المستخدم"]
 ---
 

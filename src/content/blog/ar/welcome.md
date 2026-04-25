@@ -2,7 +2,7 @@
 title: 'مرحباً بكم في ڤلادتاك'
 description: 'هذا هو منشورنا الأول باللغة العربية.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/globe.jpg'
+heroImage: '~/assets/blog/globe.webp'
 tags: ["ترحيب", "أسترو"]
 ---
 

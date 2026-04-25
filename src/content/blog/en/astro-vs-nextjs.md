@@ -2,7 +2,7 @@
 title: 'Astro vs Next.js: Choosing the Right Tool'
 description: 'Comparing the two giants of modern web development for content-driven sites.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/rocket.jpg'
+heroImage: '~/assets/blog/rocket.webp'
 tags: ["comparison", "tech"]
 ---
 

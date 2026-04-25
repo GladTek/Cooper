@@ -2,7 +2,7 @@
 title: 'The State of CSS in 2025'
 description: 'Beyond Tailwind: Exploring the new native capabilities of CSS.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/art.jpg'
+heroImage: '~/assets/blog/art.webp'
 tags: ["css", "design"]
 ---
 

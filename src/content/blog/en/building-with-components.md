@@ -2,7 +2,7 @@
 title: 'Building with Components: The Bento Grid'
 description: 'How to use Gladtek pre-built components to assemble pages in minutes.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/blocks.jpg'
+heroImage: '~/assets/blog/blocks.webp'
 tags: ["components", "ui"]
 ---
 

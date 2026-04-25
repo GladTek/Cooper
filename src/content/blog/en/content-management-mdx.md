@@ -2,7 +2,7 @@
 title: 'Content Management with MDX'
 description: 'Writing rich, interactive content with the power of components.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/writing.jpg'
+heroImage: '~/assets/blog/writing.webp'
 tags: ["mdx", "content"]
 ---
 

@@ -2,7 +2,7 @@
 title: 'React Server Components in Astro'
 description: 'Exploring the future of React integration and how Astro makes it even better.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/server.jpg'
+heroImage: '~/assets/blog/server.webp'
 tags: ["react", "server-components", "astro"]
 ---
 

@@ -3,7 +3,7 @@ title: "البقاء: خيار براند"
 description: 'الاستعمار الوحيد لكوكب إدموندز.'
 pubDate: '2025-11-07'
 updatedDate: '2025-12-04'
-heroImage: '~/assets/blog/interstellar-brands-planet.png'
+heroImage: '~/assets/blog/interstellar-brands-planet.webp'
 tags: ["interstellar", "brand", "hope"]
 ---
 

@@ -2,7 +2,7 @@
 title: "تضحية كوبر"
 description: 'قانون نيوتن الثالث: عليك أن تترك شيئاً خلفك.'
 pubDate: '2025-05-01'
-heroImage: '~/assets/blog/interstellar-sacrifice.png'
+heroImage: '~/assets/blog/interstellar-sacrifice.webp'
 tags: ["interstellar", "heroism", "newton"]
 ---
 

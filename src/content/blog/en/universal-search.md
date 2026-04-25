@@ -2,7 +2,7 @@
 title: 'Universal Search with Fuse.js'
 description: 'Implementing lightning-fast fuzzy search with a premium Command Palette.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/search.jpg'
+heroImage: '~/assets/blog/search.webp'
 tags: ["search", "tech"]
 ---
 

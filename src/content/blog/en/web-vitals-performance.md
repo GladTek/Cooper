@@ -2,7 +2,7 @@
 title: 'Web Vitals & Performance Monitoring'
 description: 'How to keep your site fast and measure what matters.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/speed.jpg'
+heroImage: '~/assets/blog/speed.webp'
 tags: ["performance", "web-vitals"]
 ---
 

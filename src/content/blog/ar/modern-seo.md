@@ -2,7 +2,7 @@
 title: 'تصدر نتائج البحث في 2025'
 description: 'دليل شامل لاستراتيجيات تحسين محركات البحث الحديثة (Modern SEO Strategies).'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/search.jpg'
+heroImage: '~/assets/blog/search.webp'
 tags: ["SEO", "تسويق", "جوجل"]
 ---
 

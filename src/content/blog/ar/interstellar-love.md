@@ -2,7 +2,7 @@
 title: 'الحب يتجاوز الأبعاد'
 description: 'لماذا الحب هو الشيء الوحيد القادر على عبور الزمان والمكان.'
 pubDate: '2025-06-20'
-heroImage: '~/assets/blog/interstellar-love.png'
+heroImage: '~/assets/blog/interstellar-love.webp'
 tags: ["interstellar", "philosophy", "love"]
 ---
 

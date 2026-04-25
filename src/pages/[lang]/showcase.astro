@@ -16,8 +16,8 @@ export async function getStaticPaths() {
 const { lang } = Astro.params;
 const t = useTranslations(lang);
 
-const beforeImage = '/showcase-light.png';
-const afterImage = '/showcase-dark.png';
+const beforeImage = '/showcase-light.webp';
+const afterImage = '/showcase-dark.webp';
 ---
 
 <Layout title={t['showcase.title']} description={t['showcase.subtitle']}>

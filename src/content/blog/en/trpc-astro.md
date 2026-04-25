@@ -2,7 +2,7 @@
 title: 'Using TRPC with Astro'
 description: 'End-to-end type safety without the boilerplate.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/ai.jpg'
+heroImage: '~/assets/blog/ai.webp'
 tags: ["typescript", "api"]
 ---
 

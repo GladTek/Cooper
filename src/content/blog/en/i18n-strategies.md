@@ -2,7 +2,7 @@
 title: 'Internationalization (i18n) Strategies'
 description: 'Going global: How to structure your content for multiple languages.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/map.jpg'
+heroImage: '~/assets/blog/map.webp'
 tags: ["i18n", "global"]
 ---
 

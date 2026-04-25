@@ -2,7 +2,7 @@
 title: "قانون مورفي: كل ما يمكن أن يحدث"
 description: 'لا يعني ذلك أن شيئاً سيئاً سيحدث. بل يعني أن كل ما يمكن أن يحدث، سيحدث.'
 pubDate: '2025-10-04'
-heroImage: '~/assets/blog/interstellar-tesseract.png'
+heroImage: '~/assets/blog/interstellar-tesseract.webp'
 tags: ["interstellar", "murph", "optimism"]
 ---
 

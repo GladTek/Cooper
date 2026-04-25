@@ -2,7 +2,7 @@
 title: 'Headless CMS Comparison'
 description: 'Why we chose a Git-based MDX workflow over traditional CMS options.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/library.jpg'
+heroImage: '~/assets/blog/library.webp'
 tags: ["cms", "content-strategy"]
 ---
 

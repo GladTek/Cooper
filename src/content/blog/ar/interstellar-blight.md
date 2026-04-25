@@ -2,7 +2,7 @@
 title: "الآفة: أيام الأرض الأخيرة"
 description: 'الانهيار البيئي الذي أجبر البشرية على التوجه إلى النجوم.'
 pubDate: '2025-07-20'
-heroImage: '~/assets/blog/interstellar-dust-storm.png'
+heroImage: '~/assets/blog/interstellar-dust-storm.webp'
 tags: ["interstellar", "earth", "dystopia"]
 ---
 

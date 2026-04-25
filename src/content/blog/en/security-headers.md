@@ -2,7 +2,7 @@
 title: 'Secure Headers & CSP'
 description: 'Essential security best practices for modern web apps.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/shield.jpg'
+heroImage: '~/assets/blog/shield.webp'
 tags: ["security", "devops"]
 ---
 

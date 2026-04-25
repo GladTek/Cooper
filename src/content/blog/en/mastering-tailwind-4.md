@@ -2,7 +2,7 @@
 title: 'Mastering Tailwind CSS 4'
 description: 'How to leverage the latest features in Tailwind CSS v4 in your Astro projects.'
 pubDate: '2025-01-15'
-heroImage: '~/assets/blog/colors.jpg'
+heroImage: '~/assets/blog/colors.webp'
 tags: ["css", "tailwind"]
 ---
 
