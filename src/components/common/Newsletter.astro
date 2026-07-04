@@ -1,0 +1,232 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  buttonText?: string;
+  placeholder?: string;
+}
+
+const {
+  title = "Join the Frontier",
+  description = "Get the latest updates on space-age engineering and interstellar design directly in your inbox.",
+  buttonText = "Subscribe",
+  placeholder = "enter your email...",
+} = Astro.props;
+---
+
+<div class="relative group">
+  <div class="absolute -inset-0.5 bg-linear-to-r from-primary/50 to-blue-500/50 rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+
+  <div class="relative bg-background border border-foreground/10 rounded-2xl p-8 md:p-12 overflow-hidden shadow-2xl">
+    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+
+    <div id="newsletter-panel-wrapper" class="grid" data-status="idle">
+      <div data-view="success" class="[grid-area:1/1] flex flex-col items-center text-center space-y-4 py-4">
+        <div class="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center text-green-500">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <h3 class="text-2xl font-display font-bold">Welcome Aboard!</h3>
+        <p class="text-muted-foreground max-w-sm">
+          You've successfully subscribed to our newsletter. Prepare for departure!
+        </p>
+        <button type="button" id="newsletter-panel-reset" class="text-sm font-medium text-primary hover:underline">
+          Subscribe another email
+        </button>
+      </div>
+
+      <div data-view="form" class="[grid-area:1/1]">
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 id="newsletter-panel-title" class="text-3xl font-display font-bold mb-4">{title}</h2>
+            <p class="text-muted-foreground leading-relaxed">
+              {description}
+            </p>
+          </div>
+
+          <div class="relative">
+            <form id="newsletter-panel-form" class="space-y-4" novalidate>
+              <input
+                type="text"
+                name="b_name"
+                tabindex="-1"
+                autocomplete="off"
+                aria-hidden="true"
+                class="hidden"
+              />
+
+              <div class="relative">
+                <label for="newsletter-panel-email" class="sr-only">
+                  {placeholder}
+                </label>
+                <input
+                  required
+                  id="newsletter-panel-email"
+                  name="email"
+                  type="email"
+                  placeholder={placeholder}
+                  aria-label={placeholder}
+                  aria-labelledby="newsletter-panel-title"
+                  class="field-input w-full bg-foreground/5 border border-foreground/10 rounded-xl px-4 py-4 pr-12 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-foreground/30"
+                />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/20" aria-hidden="true">
+                  <path d="m22 2-7 20-4-9-9-4Z" />
+                  <path d="M22 2 11 13" />
+                </svg>
+              </div>
+
+              <button
+                id="newsletter-panel-submit"
+                type="submit"
+                class="w-full group/btn relative overflow-hidden bg-primary text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-[0.98] disabled:opacity-70"
+              >
+                <div class="relative z-10 flex items-center justify-center gap-2">
+                  <span class="submit-idle-label flex items-center gap-2">
+                    <span>{buttonText}</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-[18px] h-[18px] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" aria-hidden="true">
+                      <path d="m22 2-7 20-4-9-9-4Z" />
+                      <path d="M22 2 11 13" />
+                    </svg>
+                  </span>
+                  <span class="submit-loading-label hidden items-center gap-2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 animate-spin" aria-hidden="true">
+                      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                    </svg>
+                    <span>Processing...</span>
+                  </span>
+                </div>
+                <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-shimmer"></div>
+              </button>
+            </form>
+
+            <p id="newsletter-panel-error" class="hidden absolute -bottom-8 left-0 text-xs text-red-500 flex items-center gap-1" role="alert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 shrink-0" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span id="newsletter-panel-error-text">Something went wrong. Please try again.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { actions } from 'astro:actions';
+
+  const wrapper = document.getElementById('newsletter-panel-wrapper');
+  const form = document.getElementById('newsletter-panel-form') as HTMLFormElement | null;
+  const emailInput = document.getElementById('newsletter-panel-email') as HTMLInputElement | null;
+  const resetBtn = document.getElementById('newsletter-panel-reset');
+  const submitBtn = document.getElementById('newsletter-panel-submit') as HTMLButtonElement | null;
+  const errorEl = document.getElementById('newsletter-panel-error');
+  const errorText = document.getElementById('newsletter-panel-error-text');
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function setStatus(status: 'idle' | 'loading' | 'success') {
+    wrapper?.setAttribute('data-status', status);
+  }
+
+  function showError(message: string) {
+    if (errorText) errorText.textContent = message;
+    errorEl?.classList.remove('hidden');
+    emailInput?.setAttribute('data-invalid', 'true');
+    emailInput?.setAttribute('aria-invalid', 'true');
+  }
+
+  function clearError() {
+    errorEl?.classList.add('hidden');
+    emailInput?.removeAttribute('data-invalid');
+    emailInput?.removeAttribute('aria-invalid');
+  }
+
+  function validateEmail(value: string) {
+    if (!value) return 'Email is required.';
+    if (!EMAIL_RE.test(value)) return 'Please enter a valid email address.';
+    return null;
+  }
+
+  emailInput?.addEventListener('input', () => {
+    if (emailInput.getAttribute('data-invalid') === 'true') clearError();
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearError();
+
+    const email = emailInput?.value.trim() ?? '';
+    const clientError = validateEmail(email);
+    if (clientError) {
+      showError(clientError);
+      emailInput?.focus();
+      return;
+    }
+
+    setStatus('loading');
+    if (submitBtn) submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const { error } = await actions.newsletter.subscribe(formData);
+
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (error) {
+      showError('Something went wrong. Please try again.');
+      setStatus('idle');
+      return;
+    }
+
+    setStatus('success');
+    form.reset();
+  });
+
+  resetBtn?.addEventListener('click', () => {
+    clearError();
+    setStatus('idle');
+  });
+</script>
+
+<style>
+  [data-view] {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  [data-view='success'] {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  #newsletter-panel-wrapper[data-status='success'] [data-view='success'] {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  #newsletter-panel-wrapper[data-status='success'] [data-view='form'] {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  #newsletter-panel-wrapper[data-status='loading'] .submit-idle-label {
+    display: none;
+  }
+
+  .submit-loading-label {
+    display: none;
+  }
+
+  #newsletter-panel-wrapper[data-status='loading'] .submit-loading-label {
+    display: flex;
+  }
+
+  .field-input[data-invalid='true'] {
+    border-color: rgb(239 68 68);
+  }
+</style>

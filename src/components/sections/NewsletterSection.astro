@@ -1,5 +1,5 @@
 ---
-import Newsletter from '~/components/islands/Newsletter';
+import Newsletter from '~/components/common/Newsletter.astro';
 
 interface Props {
   title?: string;
@@ -11,10 +11,9 @@ const { title, description } = Astro.props;
 
 <section class="py-24 px-6">
     <div class="max-w-5xl mx-auto">
-        <Newsletter 
-            client:visible 
-            title={title} 
-            description={description} 
+        <Newsletter
+            title={title}
+            description={description}
         />
     </div>
 </section>

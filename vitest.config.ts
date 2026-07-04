@@ -12,6 +12,7 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/dist/**', 'tests/**'],
     alias: {
       '~': path.resolve(__dirname, './src'),
+      'astro:actions': path.resolve(__dirname, './src/test/astro-actions-stub.ts'),
     },
   },
 });

@@ -1,7 +1,7 @@
 {
   "name": "@gladtek/cooper",
   "type": "module",
-  "version": "2.0.0",
+  "version": "2.0.1-dev",
   "description": "A premium Astro template engineered for the unknown. Built for speed, endurance, and exploration.",
   "engines": {
     "node": ">=22.12.0"
@@ -36,7 +36,7 @@
     "@astrojs/vercel": "^11.0.2",
     "astro": "^7.0.6",
     "astro-embed": "^0.13.0",
-    "astro-mermaid": "^2.0.1",
+    "astro-mermaid": "^2.1.0",
     "clsx": "^2.1.1",
     "fuse.js": "^7.2.0",
     "lucide-react": "1.11.0",
@@ -45,7 +45,8 @@
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "sharp": "^0.34.5",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

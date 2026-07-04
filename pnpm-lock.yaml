@@ -48,8 +48,8 @@ importers:
         specifier: ^0.13.0
         version: 0.13.0(astro@7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3))
       astro-mermaid:
-        specifier: ^2.0.1
-        version: 2.0.1(astro@7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3))(mermaid@11.14.0)
+        specifier: ^2.1.0
+        version: 2.1.0(astro@7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3))(mermaid@11.14.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -77,6 +77,9 @@ importers:
       tailwind-merge:
         specifier: ^3.5.0
         version: 3.5.0
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.9
@@ -2551,8 +2554,8 @@ packages:
     peerDependencies:
       astro: ^5.0.0 || ^6.0.0-alpha
 
-  astro-mermaid@2.0.1:
-    resolution: {integrity: sha512-JTyB62FMFJpwS/1yUplmrugL0yr0flBVYZw6mf3s7pVlh+CHCeZTXyj3KCCWtFhnPLAdM+PYld0D+gxN/SysLQ==}
+  astro-mermaid@2.1.0:
+    resolution: {integrity: sha512-fFRUN0BTZh+DZhDiLyblXoO26XqJ1Rr+qK3JGgSu7OBspKHDm59jkztg/aHsrdo1vO/tIq/+xhP/vgT8Mp92XA==}
     peerDependencies:
       '@mermaid-js/layout-elk': ^0.2.0
       astro: '>=4'
@@ -8962,7 +8965,7 @@ snapshots:
       '@astro-community/astro-embed-youtube': 0.5.10
       astro: 7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3)
 
-  astro-mermaid@2.0.1(astro@7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3))(mermaid@11.14.0):
+  astro-mermaid@2.1.0(astro@7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3))(mermaid@11.14.0):
     dependencies:
       astro: 7.0.6(@astrojs/markdown-remark@7.2.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@netlify/blobs@10.7.9)(@types/node@25.6.0)(@vercel/functions@3.4.3)(jiti@2.6.1)(rollup@4.60.1)(terser@5.46.1)(yaml@2.8.3)
       import-meta-resolve: 4.2.0

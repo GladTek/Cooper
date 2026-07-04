@@ -3,6 +3,7 @@ import { siteConfig, ACTION_LINKS, FOOTER_LINKS } from '~/site.config';
 import BrandIcon from '~/components/common/BrandIcon.astro';
 import { defaultLang } from '~/i18n/ui';
 import { useTranslations } from '~/i18n/utils';
+import { actions } from 'astro:actions';
 
 const today = new Date();
 const { lang = defaultLang } = Astro.params;
@@ -22,21 +23,25 @@ const t = useTranslations(lang);
 
         <div class="mt-4 w-full">
           <div id="newsletter-title" class="text-sm font-semibold text-foreground mb-2">{t['footer.newsletter.title']}</div>
-          <form class="flex gap-2 max-w-sm w-full">
+          <form id="newsletter-form-footer" class="flex gap-2 max-w-sm w-full" method="POST" action={actions.newsletter.subscribe}>
             <label for="newsletter-email-footer" class="sr-only">Email address</label>
-            <input 
+            <input
               id="newsletter-email-footer"
-              type="email" 
+              name="email"
+              type="email"
+              required
               placeholder={t['footer.newsletter.placeholder']}
               aria-label={t['footer.newsletter.placeholder']}
               aria-labelledby="newsletter-title"
               title={t['footer.newsletter.placeholder']}
               class="bg-background border border-foreground/10 rounded-full px-4 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder:text-muted-foreground/70 text-foreground"
             />
+            <input type="text" name="b_name" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
             <button type="submit" class="bg-foreground text-background rounded-full px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity whitespace-nowrap">
               {t['footer.newsletter.button']}
             </button>
           </form>
+          <p id="newsletter-footer-status" class="text-xs mt-2 hidden" role="status"></p>
         </div>
       </div>
       
@@ -93,3 +98,31 @@ const t = useTranslations(lang);
     </div>
   </div>
 </footer>
+
+<script>
+  import { actions, isInputError } from 'astro:actions';
+
+  const form = document.getElementById('newsletter-form-footer') as HTMLFormElement | null;
+  const status = document.getElementById('newsletter-footer-status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+
+    const formData = new FormData(form);
+    const { error } = await actions.newsletter.subscribe(formData);
+
+    status.classList.remove('hidden', 'text-red-500', 'text-green-500');
+    if (error) {
+      status.textContent = isInputError(error)
+        ? 'Please enter a valid email address.'
+        : 'Something went wrong. Please try again.';
+      status.classList.add('text-red-500');
+      return;
+    }
+
+    status.textContent = "You're subscribed!";
+    status.classList.add('text-green-500');
+    form.reset();
+  });
+</script>
