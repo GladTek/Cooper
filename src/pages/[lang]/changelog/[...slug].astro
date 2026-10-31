@@ -27,11 +27,19 @@ const { entry } = Astro.props;
 const { lang } = Astro.params;
 const { Content } = await render(entry);
 
+// Calculate available translations
+const allEntries = await getCollection('changelog');
+const currentBaseSlug = entry.id.split('/').slice(1).join('/');
+const availableLangs = allEntries
+    .filter(e => e.id.endsWith(currentBaseSlug))
+    .map(e => e.id.split('/')[0]);
+
 ---
 
 <Layout 
     title={`v${entry.data.version}: ${entry.data.title} - Changelog`}
     description={entry.data.description}
+    availableLangs={availableLangs}
 >
     <PageHeader 
         title={`Release <span class="text-primary">v${entry.data.version}</span>`}

@@ -20,21 +20,50 @@ export async function getStaticPaths({ paginate }: { paginate: GetStaticPathsOpt
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
   );
 
-  return Object.keys(languages).flatMap((lang) => {
+  const langList = Object.keys(languages);
+
+  const pageCountByLang: Record<string, number> = {};
+  for (const lang of langList) {
+    const count = posts.filter((post) => post.id.startsWith(`${lang}/`)).length;
+    pageCountByLang[lang] = Math.max(1, Math.ceil(count / siteConfig.blog.postsPerPage));
+  }
+
+  return langList.flatMap((lang) => {
       const filteredPosts = posts.filter((post) => post.id.startsWith(`${lang}/`));
-      return paginate(filteredPosts, { 
+      const pages = paginate(filteredPosts, { 
           params: { lang }, 
           pageSize: siteConfig.blog.postsPerPage
+      });
+
+      return pages.map((pageObj) => {
+        const pageNum = pageObj.props.page.currentPage;
+        const availableLangs = langList.filter((l) => pageCountByLang[l] >= pageNum);
+        return {
+          ...pageObj,
+          props: {
+            ...pageObj.props,
+            availableLangs,
+          }
+        };
       });
   });
 }
 
-const { page } = Astro.props as { page: Page<CollectionEntry<'blog'>> };
+interface Props {
+  page: Page<CollectionEntry<'blog'>>;
+  availableLangs?: string[];
+}
+
+const { page, availableLangs } = Astro.props as Props;
 const { lang } = Astro.params;
 const t = useTranslations(lang);
 ---
 
-<Layout title="Blog - Astro Boilerplate" description="Read our latest articles">
+<Layout 
+  title="Blog - Astro Boilerplate" 
+  description="Read our latest articles"
+  availableLangs={availableLangs}
+>
   <PageHeader 
       title={t['blog.hero.title']}
       description={t['blog.hero.subtitle']}
