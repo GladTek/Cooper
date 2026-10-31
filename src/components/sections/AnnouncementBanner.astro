@@ -14,7 +14,7 @@ const { id, message, link, linkText } = Astro.props;
 <div 
   id="announcement-banner" 
   data-banner-id={id}
-  class="bg-primary hover:bg-primary/90 transition-colors text-white relative overflow-hidden hidden"
+  class="bg-primary hover:bg-primary/90 transition-colors text-white relative overflow-hidden"
   role="alert"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,6 +42,17 @@ const { id, message, link, linkText } = Astro.props;
   </div>
 </div>
 
+<script is:inline define:vars={{ id }}>
+  try {
+    if (localStorage.getItem(`announcement_${id}`)) {
+      var banner = document.getElementById('announcement-banner');
+      if (banner) {
+        banner.style.display = 'none';
+      }
+    }
+  } catch (e) {}
+</script>
+
 <script>
   const banner = document.getElementById('announcement-banner');
   const dismissBtn = document.getElementById('dismiss-banner');
@@ -49,23 +60,6 @@ const { id, message, link, linkText } = Astro.props;
   if (banner && dismissBtn) {
     const id = banner.getAttribute('data-banner-id');
     const storageKey = `announcement_${id}`;
-    
-    // Check if previously dismissed
-    const isDismissed = localStorage.getItem(storageKey);
-    
-    if (!isDismissed) {
-      // Show the banner
-      banner.classList.remove('hidden');
-      // Simple animation
-      banner.animate([
-        { height: '0', opacity: '0' },
-        { height: 'auto', opacity: '1' }
-      ], {
-        duration: 300,
-        easing: 'ease-in-out',
-        fill: 'forwards'
-      });
-    }
 
     dismissBtn.addEventListener('click', () => {
         // Hide with animation
@@ -78,8 +72,10 @@ const { id, message, link, linkText } = Astro.props;
         });
 
         animation.onfinish = () => {
-            banner.classList.add('hidden');
-            localStorage.setItem(storageKey, 'true');
+            banner.style.display = 'none';
+            try {
+              localStorage.setItem(storageKey, 'true');
+            } catch (e) {}
         };
     });
   }
