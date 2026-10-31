@@ -55,7 +55,10 @@ export function getHreflangLinks(
   const langKeys = configuredLangs.join('|');
   const langPattern = new RegExp(`^/(${langKeys})(?=/|$)(.*)`);
   const match = normalizedPathname.match(langPattern);
-  const cleanPath = match ? match[2] : normalizedPathname;
+  if (!match) {
+    return [];
+  }
+  const cleanPath = match[2];
 
   const baseUrl = site
     ? (site instanceof URL ? site.href : site).replace(/\/+$/, '')

@@ -40,6 +40,12 @@ describe('getHreflangLinks', () => {
     expect(getHreflangLinks('/en/docs/intro', siteUrl, [])).toEqual([]);
   });
 
+  it('returns empty array for unlocalized paths without a language prefix', () => {
+    expect(getHreflangLinks('/demo/home-centered', siteUrl)).toEqual([]);
+    expect(getHreflangLinks('/license', siteUrl)).toEqual([]);
+    expect(getHreflangLinks('/docs/getting-started', siteUrl)).toEqual([]);
+  });
+
   it('works when site is a URL object or undefined', () => {
     const linksFromUrlObj = getHreflangLinks('/en/about', new URL(siteUrl));
     expect(linksFromUrlObj).toHaveLength(5);
