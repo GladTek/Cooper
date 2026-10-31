@@ -1,13 +1,13 @@
 ---
 import { defaultLang } from '~/i18n/ui';
-import Layout from '~/layouts/Layout.astro';
+import UntranslatedLayout from '~/layouts/UntranslatedLayout.astro';
 import HomeContent from '~/components/sections/HomeContent.astro';
 ---
 
-<Layout
+<UntranslatedLayout
     title="Cooper | Demo: Split Hero"
     description="Internal demo page showcasing the split-screen hero variant."
     noindex={true}
 >
     <HomeContent lang={defaultLang} heroVariant="split" />
-</Layout>
+</UntranslatedLayout>

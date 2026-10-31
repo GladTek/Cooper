@@ -29,7 +29,7 @@ const showPicker = displayLanguages.length > 1;
             {displayLanguages.map(([label, name]) => (
                 <li>
                     <a 
-                        href={`/${label}${Astro.url.pathname.replace(new RegExp(`^/(${Object.keys(languages).join('|')})`), '')}`} 
+                        href={`/${label}${Astro.url.pathname.replace(new RegExp(`^/(${Object.keys(languages).join('|')})(?=/|$)`), '')}`} 
                         class={`block px-4 py-2 text-sm hover:bg-muted transition-colors ${lang === label ? 'text-primary font-bold' : 'text-foreground'}`}
                     >
                         {name}

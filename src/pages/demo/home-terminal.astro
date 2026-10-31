@@ -1,13 +1,13 @@
 ---
 import { defaultLang } from '~/i18n/ui';
-import Layout from '~/layouts/Layout.astro';
+import UntranslatedLayout from '~/layouts/UntranslatedLayout.astro';
 import HomeContent from '~/components/sections/HomeContent.astro';
 ---
 
-<Layout
+<UntranslatedLayout
     title="Cooper | Demo: Terminal Hero"
     description="Internal demo page showcasing the terminal/mission-readout hero variant."
     noindex={true}
 >
     <HomeContent lang={defaultLang} heroVariant="terminal" />
-</Layout>
+</UntranslatedLayout>
