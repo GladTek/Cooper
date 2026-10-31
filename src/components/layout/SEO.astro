@@ -1,4 +1,7 @@
 ---
+import { siteConfig } from '~/site.config';
+import { getHreflangLinks } from '~/i18n/utils';
+
 interface Props {
   title: string;
   description: string;
@@ -9,11 +12,24 @@ interface Props {
   article?: boolean;
   noindex?: boolean;
   nofollow?: boolean;
+  availableLangs?: string[];
 }
 
-const { title, description, image, imageWidth, imageHeight, imageAlt, article = false, noindex = false, nofollow = false } = Astro.props;
-import { siteConfig } from '~/site.config';
+const {
+  title,
+  description,
+  image,
+  imageWidth,
+  imageHeight,
+  imageAlt,
+  article = false,
+  noindex = false,
+  nofollow = false,
+  availableLangs,
+} = Astro.props;
+
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+const hreflangLinks = getHreflangLinks(Astro.url.pathname, Astro.site || Astro.url, availableLangs);
 
 const ogImageUrl = image || siteConfig.ogImage;
 
@@ -36,6 +52,11 @@ const robots = [
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+
+<!-- Hreflang Alternates -->
+{hreflangLinks.map(({ lang, href }) => (
+  <link rel="alternate" hreflang={lang} href={href} />
+))}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
